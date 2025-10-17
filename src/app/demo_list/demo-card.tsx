@@ -8,10 +8,10 @@ import {
   Button,
   CardBody,
   Typography,
-} from "@material-tailwind/react";
+} from "@/components/material-tailwind-components";
 
 import Image from 'next/image'
-import { DemoProps } from "@/demos-parser";
+import { DemoProps } from "@/parsers/demos-parser";
 
 
 export function DemoCard(demo: DemoProps) {

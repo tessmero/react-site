@@ -1,17 +1,20 @@
 import path from "path";
 import fs from "fs";
 import matter from "gray-matter";
+import { title } from "process";
 
 const websiteChangelogFile = path.join(process.cwd(), "_changelogs/website.md");
 
 export interface ChangelogEntry {
-    subject: string // demo name or 'website'
+    subjectId: string // demo id or 'website'
+    subjectTitle: string
     date: Date
     description: string
 }
 
 export interface GroupedChangelogEntry {
-    subjects: string[]
+    subjectIds: string[]
+    subjectTitles: string[]
     date: Date
     description: string
 }
@@ -50,7 +53,7 @@ function getWebsiteChangelog(): ChangelogEntry[] {
         const fileContent = fs.readFileSync(websiteChangelogFile, "utf8");
         const { data, content } = matter(fileContent);
 
-    return parseChangelog(data,'website')
+    return parseChangelog(data, 'website', websiteChangelogFile)
 }
 
 
@@ -65,15 +68,18 @@ function parseDate( value: string, description: string ){
 }
 
 // extract changelog from frontmatter
-export function parseChangelog( data: {changelog?: string[]}, subject: string ): ChangelogEntry[]{
+export function parseChangelog( data: {changelog?: string[], title?: string}, id: string, filepath: string ): ChangelogEntry[]{
   
+    console.log('parse changelog with id ', id)
+
     const changelog: ChangelogEntry[] = []
     if (data.changelog) {
         if( !Array.isArray(data.changelog) )
-            throw new Error(`changelog should be array (or omitted) for ${subject}`)
+            throw new Error(`changelog should be array (or omitted) in ${filepath}`)
         for( const rawEntry of data.changelog as string[] ){
             changelog.push({
-                subject,
+                subjectId: id,
+                subjectTitle: data.title ?? id,
                 date: parseDate(rawEntry, 'changelog entry'),
                 description: rawEntry.substring( rawEntry.indexOf(' ') + 1 ),
             })
@@ -99,12 +105,14 @@ export function getGroupedChangelog( entries: ChangelogEntry[] ): Array<Changelo
             last.description === entry.description
         ) {
             // If last is a GroupedChangelogEntry, add subject
-            if ('subjects' in last) {
-                last.subjects.push(entry.subject);
+            if ('subjectIds' in last) {
+                last.subjectIds.push(entry.subjectId);
+                last.subjectTitles.push(entry.subjectTitle);
             } else {
                 // Convert last (ChangelogEntry) to GroupedChangelogEntry
                 result[result.length - 1] = {
-                    subjects: [last.subject, entry.subject],
+                    subjectIds: [last.subjectId, entry.subjectId],
+                    subjectTitles: [last.subjectTitle, entry.subjectTitle],
                     date: last.date,
                     description: last.description,
                 };

@@ -3,6 +3,7 @@ import path from "path";
 import AdmZip from "adm-zip";
 import matter from "gray-matter";
 import { ChangelogEntry, parseChangelog } from "./changelogs-parser";
+import { title } from "process";
 
 const demosDir = path.join(process.cwd(), "_demos");
 const zipsDir = path.join(process.cwd(), "_zips");
@@ -70,7 +71,7 @@ export function getCachedDemos(): DemoProps[] {
 export function getDemosMetadata(): DemoProps[] {
   const files = fs.readdirSync(demosDir);
   return files.map((filename) => {
-    console.log(`parsing demo metadata from ${filename}`)
+    // console.log(`parsing demo metadata from ${filename}`)
 
     const id = filename.split('.')[0];
     const filePath = path.join(demosDir, filename);
@@ -87,7 +88,7 @@ export function getDemosMetadata(): DemoProps[] {
     // }
 
     // parse demo changelog
-    const changelog = parseChangelog(data, id)
+    const changelog = parseChangelog(data, id, filePath)
 
     return {
         id,
@@ -136,7 +137,7 @@ export function extractDemoZips(demos: DemoProps[]) {
   // extract zips to output dir, creating a new subdir for each demo
   demos.forEach((demo) => {
     const zipPath = path.join(zipsDir, demo.id + ".zip");
-    console.log(`checking if zip was updated: ${zipPath}`)
+    // console.log(`checking if zip was updated: ${zipPath}`)
     const demoOutDir = path.join(outputDir, demo.id);
     const zipStat = fs.statSync(zipPath);
     let shouldExtract = false;

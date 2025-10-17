@@ -18,7 +18,24 @@ const eslintConfig = [
       "out/**",
       "build/**",
       "next-env.d.ts",
+      "_demos/**",
+      "_changelogs/**",
+      "_zips/**",
+      "public/**",
     ],
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          paths: [
+            {
+              name: '@material-tailwind/react',
+              message: 'Importing from @material-tailwind/react is not allowed. Instead use "@/components/material-tailwind-components"'
+            }
+          ]
+        }
+      ]
+    },
   },
 ];
 

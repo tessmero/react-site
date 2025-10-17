@@ -1,17 +1,14 @@
 'use client';
 
 import React from "react";
-import {
-  Navbar,
-  Collapse,
-  Typography,
-  IconButtonProps,
-} from "@material-tailwind/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
  
+import { Collapse, IconButtonProps, Navbar, Typography } from "@/components/material-tailwind-components";
+
 function NavList() {
   return (
-    <ul className="my-2 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
+    <ul className="
+      my-2 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
       <Typography
         as="li"
         variant="small"
@@ -69,7 +66,9 @@ export function TopBar() {
   }, []);
  
   return (
-    <Navbar className="mx-auto max-w-screen-xl px-6 py-3">
+    <Navbar className="
+      text-gray-600 dark:text-neutral-400 
+      mx-auto max-w-screen-xl px-6 py-3">
       <div className="flex items-center justify-between text-blue-gray-900">
         <Typography
           as="a"

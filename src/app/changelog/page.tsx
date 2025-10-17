@@ -1,9 +1,9 @@
 
 // server component used to build static changelog page
 
-import { ChangelogEntry, getCachedWebsiteChangelog, getGroupedChangelog } from "@/changelogs-parser";
+import { ChangelogEntry, getCachedWebsiteChangelog, getGroupedChangelog } from "@/parsers/changelogs-parser";
 import Changelog from ".";
-import { getCachedDemos } from "@/demos-parser";
+import { getCachedDemos } from "@/parsers/demos-parser";
 
 export default function ChangelogPage() {
 

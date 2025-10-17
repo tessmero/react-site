@@ -2,7 +2,7 @@
 // client component for changelog page 
 'use client'
 
-import { ChangelogEntry, GroupedChangelogEntry } from "@/changelogs-parser"
+import { ChangelogEntry, GroupedChangelogEntry } from "@/parsers/changelogs-parser"
 import dateformat from 'dateformat'
 import parse from 'html-react-parser';
 import Accordion from "./accordian";
@@ -14,18 +14,18 @@ type ChangelogProps = {
 }
 
 function IconElem({entry}:{entry: ChangelogEntry | GroupedChangelogEntry} ){
-  if( 'subjects' in entry ){
+  if( 'subjectIds' in entry ){
     // entry is group, show stacked icons
     return (
       <div className="mt-8 relative h-[30px] w-[30px] flex items-center">
-        {entry.subjects.slice(0,5).map((id, key) => (
+        {entry.subjectIds.slice(0,5).map((id, key) => (
           <Image
             key={key}
             width="200"
             height="200"
             src={`/images/thumbnails/${id}.png`}
             className="absolute top-0 left-0 object-cover rounded-xl shadow-lg"
-            style={{ top: `${key * 10}px`, zIndex: entry.subjects.length - key }}
+            style={{ top: `${key * 10}px`, zIndex: entry.subjectIds.length - key }}
             alt="name"
           />
         ))}
@@ -34,10 +34,11 @@ function IconElem({entry}:{entry: ChangelogEntry | GroupedChangelogEntry} ){
   } else {
     // entry is not group, show one icon
     let src
-    if( entry.subject === 'website' ){
+    if( entry.subjectId === 'website' ){
       src =`/images/thumbnails/recursio.png`
     } else {
-      src =`/images/thumbnails/${entry.subject}.png`
+      // subject is demo
+      src =`/images/thumbnails/${entry.subjectId}.png`
     }
     return (
       <Image
@@ -53,12 +54,12 @@ function IconElem({entry}:{entry: ChangelogEntry | GroupedChangelogEntry} ){
 
 function SubjectElem({entry}:{entry: ChangelogEntry | GroupedChangelogEntry} ){
   
-  if( 'subjects' in entry ){
+  if( 'subjectTitles' in entry ){
     // entry is group
     return (
-      <Accordion title={`${entry.subjects.length} Demos...`}>
+      <Accordion title={`${entry.subjectIds.length} Demos...`}>
         <ul>
-          {entry.subjects.map((subject, key) => (
+          {entry.subjectTitles.map((subject, key) => (
             <li key={key}>{subject}</li>
           ))}
         </ul>
@@ -68,7 +69,7 @@ function SubjectElem({entry}:{entry: ChangelogEntry | GroupedChangelogEntry} ){
     // entry is not group
     return (
       <p className="font-semibold text-sm text-gray-800 dark:text-neutral-200">
-        <b>{entry.subject}</b>
+        <b>{entry.subjectTitle}</b>
       </p>
     )
   }
