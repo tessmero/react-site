@@ -1,3 +1,5 @@
+
+// client component for demo_list page
 'use client'
 
 import {

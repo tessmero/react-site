@@ -30,9 +30,21 @@ export interface DemoProps {
 
 // Use process-level cache for demos metadata
 const DEMOS_CACHE_KEY = '__demos_metadata_cache__';
+const isCacheEnabled = false
 export function getCachedDemos(): DemoProps[] {
 
+
+
   console.log('getCachedDemos')
+
+
+    if( !isCacheEnabled ){
+      console.log('CACHE IS DISABLED')
+      const demos = getDemosMetadata() // check markdown files
+      extractDemoZips(demos) // validate zips and extract assets
+      return demos
+    }
+
 
   // avoid re-running expensive operations when reloading page in dev mode
   if (typeof globalThis.process !== 'undefined') {
@@ -75,7 +87,7 @@ export function getDemosMetadata(): DemoProps[] {
     // }
 
     // parse demo changelog
-    const changelog = parseChangelog(data, filePath)
+    const changelog = parseChangelog(data, id)
 
     return {
         id,

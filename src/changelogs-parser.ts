@@ -2,6 +2,7 @@ import path from "path";
 import fs from "fs";
 import matter from "gray-matter";
 
+const websiteChangelogFile = path.join(process.cwd(), "_changelogs/website.md");
 
 export interface ChangelogEntry {
     subject: string // demo name or 'website'
@@ -9,14 +10,23 @@ export interface ChangelogEntry {
     description: string
 }
 
-
-const filePath = path.join(process.cwd(), "_changelogs/website.md");
+export interface GroupedChangelogEntry {
+    subjects: string[]
+    date: Date
+    description: string
+}
 
 // Use process-level cache for changelogs metadata
 const CHANGELOGS_CACHE_KEY = '__changelogs_metadata_cache__';
+const isCacheEnabled = false
 export function getCachedWebsiteChangelog(): ChangelogEntry[] {
 
   console.log('getCachedWebsiteChangelog')
+
+    if( !isCacheEnabled ){
+        console.log('CACHE IS DISABLED')
+        return getWebsiteChangelog();
+    }
 
   // avoid re-running expensive operations when reloading page in dev mode
   if (typeof globalThis.process !== 'undefined') {
@@ -32,18 +42,15 @@ export function getCachedWebsiteChangelog(): ChangelogEntry[] {
   }
 
   throw new Error('environment has no process')
-  // // fallback for environments without process
-  // console.log('getCachedDemos EXPENSIVE FALLBACK')
-  // return getDemosMetadata();
 }
 
 function getWebsiteChangelog(): ChangelogEntry[] {
 
-    console.log(`parsing website changelog from ${filePath}`)
-        const fileContent = fs.readFileSync(filePath, "utf8");
+    console.log(`parsing website changelog from ${websiteChangelogFile}`)
+        const fileContent = fs.readFileSync(websiteChangelogFile, "utf8");
         const { data, content } = matter(fileContent);
 
-    return parseChangelog(data,filePath)
+    return parseChangelog(data,'website')
 }
 
 
@@ -58,19 +65,53 @@ function parseDate( value: string, description: string ){
 }
 
 // extract changelog from frontmatter
-export function parseChangelog( data: {changelog?: string[]}, description: string ): ChangelogEntry[]{
+export function parseChangelog( data: {changelog?: string[]}, subject: string ): ChangelogEntry[]{
   
     const changelog: ChangelogEntry[] = []
     if (data.changelog) {
         if( !Array.isArray(data.changelog) )
-            throw new Error(`changelog should be array (or omitted) in ${description}`)
+            throw new Error(`changelog should be array (or omitted) for ${subject}`)
         for( const rawEntry of data.changelog as string[] ){
             changelog.push({
-                subject: 'website',
+                subject,
                 date: parseDate(rawEntry, 'changelog entry'),
                 description: rawEntry.substring( rawEntry.indexOf(' ') + 1 ),
             })
         }
     }
     return changelog
+}
+
+
+// group entries with matching date and description
+export function getGroupedChangelog( entries: ChangelogEntry[] ): Array<ChangelogEntry | GroupedChangelogEntry> {
+    // Sort entries by date descending (most recent first)
+    const sorted = [...entries].sort((a, b) => b.date.getTime() - a.date.getTime());
+
+    // Group by date+description
+    const result: Array<ChangelogEntry | GroupedChangelogEntry> = [];
+    for (const entry of sorted) {
+        // Try to find a group with same date and description
+        const last = result[result.length - 1];
+        if (
+            last &&
+            last.date.getTime() === entry.date.getTime() &&
+            last.description === entry.description
+        ) {
+            // If last is a GroupedChangelogEntry, add subject
+            if ('subjects' in last) {
+                last.subjects.push(entry.subject);
+            } else {
+                // Convert last (ChangelogEntry) to GroupedChangelogEntry
+                result[result.length - 1] = {
+                    subjects: [last.subject, entry.subject],
+                    date: last.date,
+                    description: last.description,
+                };
+            }
+        } else {
+            result.push(entry);
+        }
+    }
+    return result;
 }
