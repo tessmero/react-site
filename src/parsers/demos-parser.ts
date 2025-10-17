@@ -24,6 +24,7 @@ export interface DemoProps {
   sound?: boolean
   music?: boolean
   hasReports?: boolean
+  hidden?: boolean
 
   // whatever is below frontmatter
   content: string
@@ -98,6 +99,7 @@ export function getDemosMetadata(): DemoProps[] {
         changelog,
         techs: data.techs,
         sound: data.sound,
+        hidden: data.hidden,
         music: data.music,
         hasReports: data.hasReports,
         content,

@@ -5,7 +5,7 @@ import React from "react";
 export interface CheckBoxProps {
   label: string
   checked: boolean
-  onChange: (e: React.ChangeEvent) => void
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
 export function Checkbox(props: CheckBoxProps){

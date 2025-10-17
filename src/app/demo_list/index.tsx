@@ -40,23 +40,22 @@ export default function DemoList({ demos }: DemoListProps) {
   };
 
   // Adjust this filter logic based on your DemoProps structure
-  const filteredDemos = selectedFilters.length === 0
-    ? demos
-    : demos.filter((demo) =>
+  const filteredDemos = demos.filter((demo) =>
+        !demo.hidden &&
         selectedFilters.every((filter) =>
           checkFilter(filter as Filter,demo)
         )
       );
 
   return (
-    <section className="px-8 py-10">
+    <section className="xl:px-30 lg:px-20 md:px-10 py-10">
       <Card shadow={false} className="border border-gray-300">
         <CardHeader
           shadow={false}
           floated={false}
           className="flex overflow-visible gap-y-4 flex-wrap items-start justify-between rounded-none"
         >
-          <div className="flex items-center gap-2 m-4">
+          <div className="flex flex-wrap items-center gap-2 m-4">
             <span className="text-gray-600 dark:text-neutral-400 text-sm">Filter:</span>
             {FILTERS.map((label) => (
               <Checkbox
