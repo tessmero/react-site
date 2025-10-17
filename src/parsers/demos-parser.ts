@@ -37,11 +37,11 @@ export function getCachedDemos(): DemoProps[] {
 
 
 
-  console.log('getCachedDemos')
+  //console.log('getCachedDemos')
 
 
     if( !isCacheEnabled ){
-      console.log('CACHE IS DISABLED')
+      //console.log('CACHE IS DISABLED')
       const demos = getDemosMetadata() // check markdown files
       extractDemoZips(demos) // validate zips and extract assets
       return demos
@@ -54,7 +54,7 @@ export function getCachedDemos(): DemoProps[] {
     if (!proc[DEMOS_CACHE_KEY]) {
 
       // one-time build
-      console.log('getDemosMetadata')
+      //console.log('getDemosMetadata')
       const demos = getDemosMetadata() // check markdown files
       extractDemoZips(demos) // validate zips and extract assets
       proc[DEMOS_CACHE_KEY] = demos;
@@ -79,7 +79,7 @@ export function getDemosMetadata(): DemoProps[] {
     const fileContent = fs.readFileSync(filePath, "utf8");
     const { data, content } = matter(fileContent);
 
-    console.log(JSON.stringify(data))
+    //console.log(JSON.stringify(data))
 
     // // parse demo dates
     // const date = parseDate(data.date, 'date value')
@@ -110,7 +110,7 @@ export function getDemosMetadata(): DemoProps[] {
 export function extractDemoZips(demos: DemoProps[]) {
   const zips = fs.readdirSync(zipsDir);
 
-  console.log(JSON.stringify(zips))
+  //console.log(JSON.stringify(zips))
 
   // assert zip filenames match demo IDs (no extra zips, no missing zips)
   const demoIds = new Set(demos.map((d) => d.id + ".zip"));

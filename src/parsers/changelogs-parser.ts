@@ -24,10 +24,10 @@ const CHANGELOGS_CACHE_KEY = '__changelogs_metadata_cache__';
 const isCacheEnabled = false
 export function getCachedWebsiteChangelog(): ChangelogEntry[] {
 
-  console.log('getCachedWebsiteChangelog')
+  //console.log('getCachedWebsiteChangelog')
 
     if( !isCacheEnabled ){
-        console.log('CACHE IS DISABLED')
+        //console.log('CACHE IS DISABLED')
         return getWebsiteChangelog();
     }
 
@@ -37,7 +37,7 @@ export function getCachedWebsiteChangelog(): ChangelogEntry[] {
     if (!proc[CHANGELOGS_CACHE_KEY]) {
 
       // one-time build
-      console.log('getDemosMetadata')
+      //console.log('getDemosMetadata')
       const demos = getWebsiteChangelog() // check markdown file
       proc[CHANGELOGS_CACHE_KEY] = demos;
     }
@@ -49,7 +49,7 @@ export function getCachedWebsiteChangelog(): ChangelogEntry[] {
 
 function getWebsiteChangelog(): ChangelogEntry[] {
 
-    console.log(`parsing website changelog from ${websiteChangelogFile}`)
+    //console.log(`parsing website changelog from ${websiteChangelogFile}`)
         const fileContent = fs.readFileSync(websiteChangelogFile, "utf8");
         const { data, content } = matter(fileContent);
 
@@ -70,7 +70,7 @@ function parseDate( value: string, description: string ){
 // extract changelog from frontmatter
 export function parseChangelog( data: {changelog?: string[], title?: string}, id: string, filepath: string ): ChangelogEntry[]{
   
-    console.log('parse changelog with id ', id)
+    //console.log('parse changelog with id ', id)
 
     const changelog: ChangelogEntry[] = []
     if (data.changelog) {
