@@ -9,7 +9,9 @@ Migrated from Jekyll/Bootstrap to [NextJS](https://nextjs.org/)/[Tailwind](https
 <details>
     <summary>template for this repo</summary>
 
-[npx create-next-app@latest](https://nextjs.org/docs/app/api-reference/cli/create-next-app)
+[create-next-app documentation](https://nextjs.org/docs/app/api-reference/cli/create-next-app)
+```bash
+> npx create-next-app@latest
 What is your project named?  react-site
 Would you like to use TypeScript?  Yes
 Which linter would you like to use?  ESLint
@@ -18,6 +20,8 @@ Would you like your code inside a `src/` directory?  Yes
 Would you like to use App Router? (recommended) Yes
 Would you like to use Turbopack? (recommended) Yes
 Would you like to customize the import alias (`@/*` by default)? Yes
+```
+
 </details>
 
 # Usage
