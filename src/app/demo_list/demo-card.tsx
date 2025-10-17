@@ -11,13 +11,10 @@ import {
 } from "@material-tailwind/react";
 
 import Image from 'next/image'
-import { DemoProps } from "./demos-data";
+import { DemoProps } from "@/demos-parser";
 
 
-export function DemoCard({
-  title,
-  content,
-}: DemoProps) {
+export function DemoCard(demo: DemoProps) {
   return (
     <Card className="border border-gray-300 overflow-hidden shadow-sm">
       <CardBody className="p-4">
@@ -31,14 +28,14 @@ export function DemoCard({
           <div className="flex items-center gap-3">
             <div>
               <Typography color="blue-gray" variant="h6">
-                {title}
+                {demo.title}
               </Typography>
               <Typography
                 variant="small"
                 color="gray"
                 className="font-medium"
               >
-                {content}
+                {JSON.stringify(demo.changelog)}
               </Typography>
             </div>
           </div>
@@ -46,18 +43,16 @@ export function DemoCard({
             see collection
           </Button>
         </div>
-        {/* <div className="grid grid-cols-3 gap-2">
-          {imgs.map((img, key) => (
+        <div className="grid grid-cols-3 gap-2">
             <Image
               width="200"
               height="200"
-              key={key}
-              src={img}
+              key={demo.id}
+              src={`/images/thumbnails/${demo.id}.png`}
               className="h-full w-full object-cover rounded-xl"
               alt="name"
             />
-          ))}
-        </div> */}
+        </div>
       </CardBody>
     </Card>
   );

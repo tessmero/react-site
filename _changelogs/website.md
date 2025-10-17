@@ -1,0 +1,33 @@
+---
+title: "Website"
+changelog:
+  - 2025-09-29 Add recursio demo
+  - 2025-09-08 Add vibesort demo
+  - 2025-07-19 Add remastered songs for <span class="fa fa-music" aria-hidden="true" style="cursor:pointer"></span> easter egg
+  - 2025-06-16 Add sea-block demo
+  - 2025-06-11 Add css-workshop demo
+  - 2025-06-03 Add endless-workshop demo
+  - 2025-05-25 Add marble-workshop demo
+  - 2025-04-30 Add puppy-workshop demo
+  - 2025-04-06 Add tremolo demo
+  - 2025-03-09 Add snake-support demo
+  - 2025-03-02 Automated test reports on more... page
+  - 2025-02-13 Add pixel-art-workflow demo
+  - 2025-01-19 Add ski-stunt demo
+  - 2025-01-06 Share url params with iframe (used for collide-o-scope)
+  - 2025-01-05 Add fullscreen button and make quit buttons exit fullscreen
+  - 2024-12-31 Support zipped assets and fullscreen iframe like itch.io
+  - 2024-12-29 Add music easter egg on more... page
+  - 2024-12-07 Add sketch-ball demo
+  - 2024-11-26 Remove "technique" pages, switch to simple tag filters on more... page
+  - 2024-11-25 Add cube-dance demo
+  - 2024-11-17 Add rocket-car demo
+  - 2024-11-10 Add avalanche demo
+  - 2024-11-02 Add itsudoku demo
+  - 2024-10-27 Add boating-school demo
+  - 2024-10-21 Add changelog and update more... page
+  - 2024-10-20 Add rail-layer demo
+  - 2024-10-12 Add collide-o-scope demo
+  - 2024-10-06 Add orbital launch demo
+  - 2024-10-01 Set up jekyll site
+---

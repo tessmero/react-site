@@ -1,10 +1,10 @@
 
+// server component used to build static demo list page
 
-import { getDemosData, DemoProps } from "./demos-data";
-import DemoList, {Props} from ".";
+import DemoList from ".";
+import { getCachedDemos } from "@/demos-parser";
 
-
-export default function DemoListPage(){
-  const demos = getDemosData()
+export default function DemoListPage() {
+  const demos = getCachedDemos();
   return <DemoList demos={demos}/>;
 }

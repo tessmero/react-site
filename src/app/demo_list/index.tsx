@@ -8,17 +8,16 @@ import {
   Typography,
 } from "@material-tailwind/react";
 
-
-import { getDemosData, DemoProps } from "./demos-data";
 import { DemoCard } from "./demo-card";
+import { DemoProps } from "@/demos-parser";
 
 
-
-export type Props = {
-  demos:DemoProps[]
+type DemoListProps = {
+  demos: DemoProps[]
 }
 
-export default function DemoList({demos}: Props) {
+// demos' metadata loaded from _demos folder (page.tsx)
+export default function DemoList({demos}: DemoListProps) {
   return (
     <section className="px-8 py-10">
       <Card shadow={false} className="border border-gray-300">
