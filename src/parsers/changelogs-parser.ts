@@ -1,125 +1,122 @@
-import path from "path";
-import fs from "fs";
-import matter from "gray-matter";
-import { title } from "process";
+import path from 'path'
+import fs from 'fs'
+import matter from 'gray-matter'
 
-const websiteChangelogFile = path.join(process.cwd(), "_changelogs/website.md");
+const websiteChangelogFile = path.join(process.cwd(), '_changelogs/website.md')
 
 export interface ChangelogEntry {
-    subjectId: string // demo id or 'website'
-    subjectTitle: string
-    date: Date
-    description: string
+  subjectId: string // demo id or 'website'
+  subjectTitle: string
+  date: Date
+  description: string
 }
 
 export interface GroupedChangelogEntry {
-    subjectIds: string[]
-    subjectTitles: string[]
-    date: Date
-    description: string
+  subjectIds: string[]
+  subjectTitles: string[]
+  date: Date
+  description: string
 }
 
 // Use process-level cache for changelogs metadata
-const CHANGELOGS_CACHE_KEY = '__changelogs_metadata_cache__';
+const CHANGELOGS_CACHE_KEY = '__changelogs_metadata_cache__'
 const isCacheEnabled = false
 export function getCachedWebsiteChangelog(): ChangelogEntry[] {
+  // console.log('getCachedWebsiteChangelog')
 
-  //console.log('getCachedWebsiteChangelog')
-
-    if( !isCacheEnabled ){
-        //console.log('CACHE IS DISABLED')
-        return getWebsiteChangelog();
-    }
+  if (!isCacheEnabled) {
+    // console.log('CACHE IS DISABLED')
+    return getWebsiteChangelog()
+  }
 
   // avoid re-running expensive operations when reloading page in dev mode
   if (typeof globalThis.process !== 'undefined') {
-    const proc = globalThis.process as any; // eslint-disable-line @typescript-eslint/no-explicit-any
+    const proc = globalThis.process as any // eslint-disable-line @typescript-eslint/no-explicit-any
     if (!proc[CHANGELOGS_CACHE_KEY]) {
-
       // one-time build
-      //console.log('getDemosMetadata')
+      // console.log('getDemosMetadata')
       const demos = getWebsiteChangelog() // check markdown file
-      proc[CHANGELOGS_CACHE_KEY] = demos;
+      proc[CHANGELOGS_CACHE_KEY] = demos
     }
-    return proc[CHANGELOGS_CACHE_KEY];
+    return proc[CHANGELOGS_CACHE_KEY]
   }
 
   throw new Error('environment has no process')
 }
 
 function getWebsiteChangelog(): ChangelogEntry[] {
+  // console.log(`parsing website changelog from ${websiteChangelogFile}`)
+  const fileContent = fs.readFileSync(websiteChangelogFile, 'utf8')
 
-    //console.log(`parsing website changelog from ${websiteChangelogFile}`)
-        const fileContent = fs.readFileSync(websiteChangelogFile, "utf8");
-        const { data, content } = matter(fileContent);
+  // const { data, content } = matter(fileContent)
+  const { data } = matter(fileContent)
 
-    return parseChangelog(data, 'website', websiteChangelogFile)
+  return parseChangelog(data, 'website', websiteChangelogFile)
 }
 
-
 // parse date YYYY-MM-DD
-function parseDate( value: string, description: string ){
-    if( typeof value !== 'string' )
-        throw new Error(`date value is not string: ${description}`)
-    const d = new Date(value.split(' ')[0]);
-    if (isNaN(d.getTime())) 
-        throw new Error(`could not parse date from ${description}: ${value}`)
-    return d
+function parseDate(value: string, description: string) {
+  if (typeof value !== 'string')
+    throw new Error(`date value is not string: ${description}`)
+  const d = new Date(value.split(' ')[0])
+  if (isNaN(d.getTime()))
+    throw new Error(`could not parse date from ${description}: ${value}`)
+  return d
 }
 
 // extract changelog from frontmatter
-export function parseChangelog( data: {changelog?: string[], title?: string}, id: string, filepath: string ): ChangelogEntry[]{
-  
-    //console.log('parse changelog with id ', id)
+export function parseChangelog(data: { changelog?: string[], title?: string }, id: string, filepath: string): ChangelogEntry[] {
+  // console.log('parse changelog with id ', id)
 
-    const changelog: ChangelogEntry[] = []
-    if (data.changelog) {
-        if( !Array.isArray(data.changelog) )
-            throw new Error(`changelog should be array (or omitted) in ${filepath}`)
-        for( const rawEntry of data.changelog as string[] ){
-            changelog.push({
-                subjectId: id,
-                subjectTitle: data.title ?? id,
-                date: parseDate(rawEntry, 'changelog entry'),
-                description: rawEntry.substring( rawEntry.indexOf(' ') + 1 ),
-            })
-        }
+  const changelog: ChangelogEntry[] = []
+  if (data.changelog) {
+    if (!Array.isArray(data.changelog))
+      throw new Error(`changelog should be array (or omitted) in ${filepath}`)
+    for (const rawEntry of data.changelog as string[]) {
+      changelog.push({
+        subjectId: id,
+        subjectTitle: data.title ?? id,
+        date: parseDate(rawEntry, 'changelog entry'),
+        description: rawEntry.substring(rawEntry.indexOf(' ') + 1),
+      })
     }
-    return changelog
+  }
+  return changelog
 }
 
-
 // group entries with matching date and description
-export function getGroupedChangelog( entries: ChangelogEntry[] ): Array<ChangelogEntry | GroupedChangelogEntry> {
-    // Sort entries by date descending (most recent first)
-    const sorted = [...entries].sort((a, b) => b.date.getTime() - a.date.getTime());
+export function getGroupedChangelog(entries: ChangelogEntry[]): Array<ChangelogEntry | GroupedChangelogEntry> {
+  // Sort entries by date descending (most recent first)
+  const sorted = [...entries].sort((a, b) => b.date.getTime() - a.date.getTime())
 
-    // Group by date+description
-    const result: Array<ChangelogEntry | GroupedChangelogEntry> = [];
-    for (const entry of sorted) {
-        // Try to find a group with same date and description
-        const last = result[result.length - 1];
-        if (
-            last &&
-            last.date.getTime() === entry.date.getTime() &&
-            last.description === entry.description
-        ) {
-            // If last is a GroupedChangelogEntry, add subject
-            if ('subjectIds' in last) {
-                last.subjectIds.push(entry.subjectId);
-                last.subjectTitles.push(entry.subjectTitle);
-            } else {
-                // Convert last (ChangelogEntry) to GroupedChangelogEntry
-                result[result.length - 1] = {
-                    subjectIds: [last.subjectId, entry.subjectId],
-                    subjectTitles: [last.subjectTitle, entry.subjectTitle],
-                    date: last.date,
-                    description: last.description,
-                };
-            }
-        } else {
-            result.push(entry);
+  // Group by date+description
+  const result: Array<ChangelogEntry | GroupedChangelogEntry> = []
+  for (const entry of sorted) {
+    // Try to find a group with same date and description
+    const last = result[result.length - 1]
+    if (
+      last
+      && last.date.getTime() === entry.date.getTime()
+      && last.description === entry.description
+    ) {
+      // If last is a GroupedChangelogEntry, add subject
+      if ('subjectIds' in last) {
+        last.subjectIds.push(entry.subjectId)
+        last.subjectTitles.push(entry.subjectTitle)
+      }
+      else {
+        // Convert last (ChangelogEntry) to GroupedChangelogEntry
+        result[result.length - 1] = {
+          subjectIds: [last.subjectId, entry.subjectId],
+          subjectTitles: [last.subjectTitle, entry.subjectTitle],
+          date: last.date,
+          description: last.description,
         }
+      }
     }
-    return result;
+    else {
+      result.push(entry)
+    }
+  }
+  return result
 }

@@ -1,6 +1,6 @@
-import { redirect } from 'next/navigation';
+import { redirect } from 'next/navigation'
 
 export default function Home() {
-  redirect('/demo_list');
-  return null;
+  redirect('/demo_list')
+  return null
 }

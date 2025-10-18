@@ -29,6 +29,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@stylistic/eslint-plugin": "^5.5.0",
     "@tailwindcss/postcss": "^4.1.14",
     "@types/adm-zip": "^0.5.7",
     "@types/dateformat": "^5.0.3",
@@ -36,6 +37,7 @@
     "@types/react": "18.2.19",
     "eslint": "^9",
     "eslint-config-next": "15.5.5",
+    "eslint-plugin-unused-imports": "^4.2.0",
     "tailwindcss": "^4.1.14",
     "typescript": "^5"
   }

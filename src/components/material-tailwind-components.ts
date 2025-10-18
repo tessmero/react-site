@@ -1,8 +1,8 @@
-"use client";
+'use client'
 
 /* eslint-disable no-restricted-imports */
-import { 
-  ThemeProvider, 
+import {
+  ThemeProvider,
   Card,
   Button,
   CardBody,
@@ -13,10 +13,14 @@ import {
   IconButtonProps,
   Navbar,
   Collapse,
- } from "@material-tailwind/react"; 
- 
-export { 
-  ThemeProvider, 
+  Dialog,
+  DialogHeader,
+  DialogBody,
+  DialogFooter,
+} from '@material-tailwind/react'
+
+export {
+  ThemeProvider,
   Card,
   Button,
   CardBody,
@@ -26,5 +30,9 @@ export {
   Input,
   Navbar,
   Collapse,
+  Dialog,
+  DialogHeader,
+  DialogBody,
+  DialogFooter,
   type IconButtonProps,
- };
+}
