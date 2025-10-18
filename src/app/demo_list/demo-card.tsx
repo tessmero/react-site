@@ -20,13 +20,20 @@ import MiniChangelog from './mini-changelog'
 const visibleTechs = ['multitouch', 'physics', 'three-js'] satisfies Array<Filter>
 type VisibleTech = (typeof visibleTechs)[number]
 
+// for play, tags, and view reports
+const btnClasses = `
+  bg-neutral-0
+  border border-gray-300 hover:border-gray-500
+  hover:bg-neutral-100  light:text-neutral-900 dark:hover:bg-neutral-700
+  cursor-pointer
+`
+
 function PlayButton(demo: DemoProps) {
   return (
     <a
       href={`/${demo.id}`}
-      className="flex items-center px-2 py-1 border border-gray-300
-        rounded hover:bg-gray-100  light:text-gray-900
-        text-sm font-medium cursor-pointer transition-shadow shadow-sm"
+      className={`flex items-center px-2 py-1
+        rounded  transition-shadow shadow-sm text-sm font-medium ${btnClasses}`}
       style={{ textDecoration: 'none' }}
       rel="noopener noreferrer"
     >
@@ -49,16 +56,17 @@ export function DemoCard(props: DemoCardProps) {
   return (
     <Card
       className={`
-        cursor-pointer border border-gray-300 overflow-hidden shadow-sm 
+        hover:border-gray-500 dark:hover:border-white
+        cursor-pointer border border-gray-300 overflow-hidden 
+        
         dark:text-neutral-400
         ${props.isSelected
       ? 'bg-neutral-100  dark:bg-neutral-800'
-      : 'dark:bg-neutral-900'
-    }
+      : 'dark:bg-neutral-900'}
       `}
       onClick={props.onClickCard}
     >
-      <CardBody className="p-4">
+      <CardBody className="p-4 z-10">
         <Typography
           color="blue-gray"
           className="!text-base !font-semibold mb-1"
@@ -112,7 +120,7 @@ export function DemoCard(props: DemoCardProps) {
                   key={key}
                   size="sm"
                   variant="outlined"
-                  className="flex items-center px-2 py-1 border-gray-300"
+                  className={`flex items-center px-2 py-1 ${btnClasses}`}
                   onClick={() => props.onClickTag(tech as Filter)}
                 >
                   <FontAwesomeIcon className="mr-1 my-1" icon={faTag} />
@@ -124,7 +132,7 @@ export function DemoCard(props: DemoCardProps) {
               <Button
                 size="sm"
                 variant="outlined"
-                className="flex items-center px-2 py-1 border-gray-300 mt-2"
+                className={`flex items-center px-2 py-1 mt-2 ${btnClasses}`}
                 onClick={props.onViewReports}
               >
                 <FontAwesomeIcon className="mr-1 my-1" icon={faPlay} />
@@ -138,7 +146,11 @@ export function DemoCard(props: DemoCardProps) {
         {demo.changelog && demo.changelog.length > 0
           && (
             <div
-              className={`transition-all duration-300 overflow-hidden ${props.isSelected ? 'max-h-40 opacity-100 mt-4' : 'max-h-0 opacity-0'} bg-gray-100 dark:bg-gray-800 rounded p-3`}
+              className={`
+                transition-all duration-300 overflow-hidden 
+                bg-gray-100 dark:bg-gray-800 rounded p-3
+                ${props.isSelected ? 'max-h-40 opacity-100 mt-4' : 'max-h-0 opacity-0'} 
+              `}
               style={{ pointerEvents: props.isSelected ? 'auto' : 'none' }}
             >
               <MiniChangelog entries={demo.changelog}></MiniChangelog>

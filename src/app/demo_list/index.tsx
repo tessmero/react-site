@@ -9,6 +9,7 @@ import { Checkbox } from '@/components/checkbox'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSort, faSortDown, faSortUp } from '@fortawesome/free-solid-svg-icons'
 import { ReportsDialog } from './reports-dialog'
+import { MusicPlayer } from '@/components/music-player/music-player'
 
 const FILTERS = ['reports', 'music', 'sound', 'multitouch', 'physics', 'three-js'] as const
 export type Filter = (typeof FILTERS)[number]
@@ -94,6 +95,9 @@ export default function DemoList({ demos }: DemoListProps) {
     setReportsDialogOpen(open => !open)
   }
 
+  // show music player
+  const [musicPlayerOpen, setMusicPlayerOpen] = useState(false)
+
   // clicked checkbox at top -> add or remove one filter
   const handleCheckboxChange = (label: Filter, checked: boolean) => {
     setSelectedFilters(prev =>
@@ -102,8 +106,10 @@ export default function DemoList({ demos }: DemoListProps) {
   }
 
   // clicked tag in demo card -> select one filter and deselect all others
-  const handleClickTag = (label: Filter) => {
-    setSelectedFilters(() => [label])
+  const handleClickTag = (tag: Filter) => {
+    setSelectedFilters(() => [tag])
+    if (tag === 'music')
+      setMusicPlayerOpen(true)
   }
 
   // Sorting logic
@@ -182,7 +188,7 @@ export default function DemoList({ demos }: DemoListProps) {
             ))}
           </div>
         </CardHeader>
-        <CardBody className="grid xl:grid-cols-3 md:grid-cols-2 sx:grid-cols-1 gap-4 px-4">
+        <CardBody className="grid xl:grid-cols-3 md:grid-cols-2 sx:grid-cols-1 gap-4 px-4 items-start">
           {sortedDemos.map((demo: DemoProps) => (
             <DemoCard
               key={demo.id}
@@ -196,7 +202,13 @@ export default function DemoList({ demos }: DemoListProps) {
         </CardBody>
       </Card>
 
-      <ReportsDialog demo={selectedDemoId} open={reportsDialogOpen} handleOpen={handleReportsDialogOpen} />
+      <ReportsDialog
+        demo={demos.find(({ id }) => id === selectedDemoId)}
+        open={reportsDialogOpen}
+        handleOpen={handleReportsDialogOpen}
+      />
+
+      { musicPlayerOpen && <MusicPlayer></MusicPlayer>}
     </section>
   )
 }

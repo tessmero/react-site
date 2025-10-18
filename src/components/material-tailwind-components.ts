@@ -17,6 +17,8 @@ import {
   DialogHeader,
   DialogBody,
   DialogFooter,
+  Select,
+  Option,
 } from '@material-tailwind/react'
 
 export {
@@ -34,5 +36,7 @@ export {
   DialogHeader,
   DialogBody,
   DialogFooter,
+  Select,
+  Option,
   type IconButtonProps,
 }
