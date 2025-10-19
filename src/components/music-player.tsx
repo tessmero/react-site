@@ -149,8 +149,9 @@ export class MusicPlayer extends React.Component<IProps, IState> {
         id="music-player"
         className="fixed bottom-0 left-0 w-full bg-neutral-100 dark:bg-neutral-800 p-2 flex items-center justify-center z-[1000]"
       >
-
-        <Script src="/javascript/lofi-music-manager.js"></Script>
+        {/* moved to src/app/layout.tsx to make sure it loads first
+          <Script src="/javascript/lofi-music-manager.js"></Script>
+        */}
         {this.allSongNames.map(song => (
           <Script key={song} src={`/javascript/songs/${song}.js`}></Script>
         ))}

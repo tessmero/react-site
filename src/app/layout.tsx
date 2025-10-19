@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
 import React from 'react'
 import { ThemeProvider } from '@/components/material-tailwind-components'
+import Script from 'next/script'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -30,6 +31,7 @@ export default function RootLayout({
         `}
         style={{ minHeight: '100vh' }}
       >
+        <Script src="/javascript/lofi-music-manager.js" strategy="beforeInteractive"></Script>
         <ThemeProvider>
           {navbar}
           <main className="flex-1 flex flex-col min-h-0">{children}</main>
