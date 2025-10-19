@@ -1,6 +1,6 @@
 import path from 'path'
 import fs from 'fs'
-import matter from 'gray-matter'
+import { parseMarkdown, parseDate } from './markdown-parser'
 
 const websiteChangelogFile = path.join(process.cwd(), '_changelogs/website.md')
 
@@ -49,19 +49,9 @@ function getWebsiteChangelog(): ChangelogEntry[] {
   const fileContent = fs.readFileSync(websiteChangelogFile, 'utf8')
 
   // const { data, content } = matter(fileContent)
-  const { data } = matter(fileContent)
+  const { data } = parseMarkdown(fileContent)
 
   return parseChangelog(data, 'website', websiteChangelogFile)
-}
-
-// parse date YYYY-MM-DD
-function parseDate(value: string, description: string) {
-  if (typeof value !== 'string')
-    throw new Error(`date value is not string: ${description}`)
-  const d = new Date(value.split(' ')[0])
-  if (isNaN(d.getTime()))
-    throw new Error(`could not parse date from ${description}: ${value}`)
-  return d
 }
 
 // extract changelog from frontmatter

@@ -1,8 +1,8 @@
 import fs from 'fs'
 import path from 'path'
 import AdmZip from 'adm-zip'
-import matter from 'gray-matter'
 import { ChangelogEntry, parseChangelog } from './changelogs-parser'
+import { parseMarkdown } from './markdown-parser'
 
 const demosDir = path.join(process.cwd(), '_demos')
 const zipsDir = path.join(process.cwd(), '_zips')
@@ -69,7 +69,7 @@ export function getDemosMetadata(): DemoProps[] {
     const id = filename.split('.')[0]
     const filePath = path.join(demosDir, filename)
     const fileContent = fs.readFileSync(filePath, 'utf8')
-    const { data, content } = matter(fileContent)
+    const { data, content } = parseMarkdown(fileContent)
 
     // console.log(JSON.stringify(data))
 

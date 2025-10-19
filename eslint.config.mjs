@@ -61,7 +61,12 @@ const eslintConfig = [
             {
               // https://www.material-tailwind.com/docs/react/guide/next#with-server-components
               name: '@material-tailwind/react',
-              message: 'Importing from @material-tailwind/react is not allowed. Instead use "@/components/material-tailwind-components"',
+              message: 'Instead use @/components/material-tailwind-components',
+            },
+            {
+              // workaround dates being offset by one day when parsed
+              name: 'gray-matter',
+              message: 'Instead use @/parsers/markdown-parser.ts',
             },
           ],
         },
