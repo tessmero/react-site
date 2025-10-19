@@ -7,6 +7,7 @@ import { Button, Collapse, IconButtonProps, Navbar, Typography } from '@/compone
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faExpand } from '@fortawesome/free-solid-svg-icons'
 import Link from 'next/link'
+import { DemoProps } from '@/parsers/demos-parser'
 
 type NavLinkProps = {
   label: string
@@ -18,25 +19,31 @@ function NavLink({ label, href }: NavLinkProps) {
       as="li"
       variant="small"
       color="blue-gray"
-      className="p-1 font-medium"
+      className="font-medium h-full"
+      style={{ height: '100%' }}
     >
-      <a href={href} className="flex items-center hover:text-blue-500 transition-colors">
+      <a
+        href={href}
+        className="flex items-center w-full h-full px-2 hover:text-blue-500 transition-colors"
+        style={{ minHeight: '2.5rem' }}
+      >
         {label}
       </a>
     </Typography>
   )
 }
 
-function NavList() {
+function NavList({ headerDemos }: TopBarProps) {
   return (
-    <ul className="
-      my-2 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6"
+    <ul
+      className="my-2 flex flex-col lg:mb-0 lg:mt-0 lg:flex-row lg:items-stretch"
+      style={{ gap: 0 }}
     >
-
+      {headerDemos.map((demo, key) => (
+        <NavLink key={key} href={`/${demo.id}`} label={demo.title} />
+      ))}
       <NavLink href="/demo_list" label="More..." />
-
       <NavLink href="/changelog" label="Changelog" />
-
     </ul>
   )
 }
@@ -63,6 +70,7 @@ function IconButton({ onClick, children }: IconButtonProps) {
 
 export type TopBarProps = {
   canToggleFullscreen: boolean
+  headerDemos: Array<DemoProps>
 }
 
 export function TopBar(props: TopBarProps) {
@@ -90,33 +98,34 @@ export function TopBar(props: TopBarProps) {
   return (
     <Navbar className="
       text-gray-600 dark:text-neutral-400 dark:bg-neutral-900
-      mx-auto max-w-screen-xl px-6 py-3"
+      mx-auto max-w-screen-xl px-6"
     >
       <div className="flex items-center justify-between text-blue-gray-900">
 
-        <Link href="/" style={{ textDecoration: 'none', color: 'inherit' }}>
-          <Typography
-            variant="h6"
-            className="mr-4 cursor-pointer py-1.5"
-          >
-            tessmero.github.io
-          </Typography>
-        </Link>
+        <div className="flex">
+          <Link href="/" style={{ textDecoration: 'none', color: 'inherit' }}>
+            <Typography
+              variant="h6"
+              className="mr-4 cursor-pointer py-1.5"
+            >
+              tessmero.github.io
+            </Typography>
+          </Link>
 
-        {props.canToggleFullscreen && (
-          <Button
-            size="sm"
-            variant="outlined"
-            className="flex items-center px-2 py-1 border-gray-300 mt-2"
-            onClick={toggleFullscreen}
-          >
-            <FontAwesomeIcon className="mr-1 my-1" icon={faExpand} />
-            <span className="inline-block align-text-middle text-nowrap">Go Fullscreen</span>
-          </Button>
-        )}
+          {props.canToggleFullscreen && (
+            <Button
+              size="sm"
+              variant="outlined"
+              className="flex items-center px-2 py-1 border-gray-300"
+              onClick={toggleFullscreen}
+            >
+              <FontAwesomeIcon className="my-1" icon={faExpand} />
+            </Button>
+          )}
+        </div>
 
         <div className="hidden lg:block">
-          <NavList />
+          <NavList {...props} />
         </div>
 
         <IconButton onClick={() => setOpenNav(!openNav)}>
@@ -130,7 +139,7 @@ export function TopBar(props: TopBarProps) {
         </IconButton>
       </div>
       <Collapse open={openNav} className="lg:hidden overflow-hidden">
-        <NavList />
+        <NavList {...props} />
       </Collapse>
     </Navbar>
   )

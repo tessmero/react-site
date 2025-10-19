@@ -2,7 +2,8 @@
 
 import React from 'react'
 import './music-player.css' // Import the CSS file
-import { Button, Select, Option } from '../material-tailwind-components'
+import { Button } from '../material-tailwind-components'
+import Script from 'next/script'
 
 interface IProps {} // eslint-disable-line @typescript-eslint/no-empty-object-type
 
@@ -10,13 +11,13 @@ interface IState {
   volume: number
 }
 
-type MyButtonProps = {
+type MpButtonProps = {
   id: string
   onClick: () => void
   label: string
 }
 
-function MyButton({ id, onClick, label }: MyButtonProps) {
+function MpButton({ id, onClick, label }: MpButtonProps) {
   return (
     <Button
       id={id}
@@ -143,36 +144,30 @@ export class MusicPlayer extends React.Component<IProps, IState> {
   render() {
     return (
       <div id="music-player">
+
+        <Script src="/javascript/lofi-music-manager.js"></Script>
+        {this.allSongNames.map(song => (
+          <Script key={song} src={`/javascript/songs/${song}.js`}></Script>
+        ))}
+
         <span id="song-player-label" className="hidden-on-small-screen">Song Player</span>
 
-        <div className="w-72">
-          <Select
-            variant="outlined"
-            label="Select Song"
-            id="select-song"
-            value={this.selectedSongName}
-            onChange={(e) => {
-              if (e) this.selectedSongName = e
-              this.forceUpdate()
-            }}
-          >
-            <Option value="avalanche">avalanche</Option>
-            <Option value="chess">chess</Option>
-            <Option value="fight-cub">fight-cub</Option>
-            <Option value="orbital-launch">orbital-launch</Option>
-            <Option value="sketch-ball">sketch-ball</Option>
-            <Option value="wheely">wheely</Option>
-            <Option value="boating-school">boating-school</Option>
-            <Option value="cube-dance">cube-dance</Option>
-            <Option value="grove-tender">grove-tender</Option>
-            <Option value="rail-layer">rail-layer</Option>
-            <Option value="space-quest">space-quest</Option>
-          </Select>
-        </div>
+        <select
+          id="select-song"
+          value={this.selectedSongName}
+          onChange={(e) => {
+            this.selectedSongName = e.target.value
+            this.forceUpdate()
+          }}
+        >
+          {this.allSongNames.map(song => (
+            <option key={song} value={song}>{song}</option>
+          ))}
+        </select>
 
-        <MyButton id="play" onClick={() => this.playLofiClicked()} label="Play A" />
-        <MyButton id="playOgg" onClick={() => this.playOggClicked()} label="Play B" />
-        <MyButton id="stop" onClick={() => this.stopClicked()} label="Stop" />
+        <MpButton id="play" onClick={() => this.playLofiClicked()} label="Play A" />
+        <MpButton id="playOgg" onClick={() => this.playOggClicked()} label="Play B" />
+        <MpButton id="stop" onClick={() => this.stopClicked()} label="Stop" />
 
         <input
           type="range"

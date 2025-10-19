@@ -1,6 +1,7 @@
 ---
 title: "Website"
 changelog:
+  - 2025-10-19 Migrated to Next.js / Tailwind CSS
   - 2025-09-29 Add recursio demo
   - 2025-09-08 Add vibesort demo
   - 2025-07-19 Add remastered songs for <span class="fa fa-music" aria-hidden="true" style="cursor:pointer"></span> easter egg

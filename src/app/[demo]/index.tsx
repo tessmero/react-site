@@ -7,7 +7,7 @@ export default function ClientDemoPage() {
   return (
     <iframe
       id="gameFrame"
-      className="w-full h-full"
+      className="w-full h-full rounded-lg"
       src={`/iframe/${demo}/index.html`}
       allowFullScreen
     />

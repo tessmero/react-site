@@ -1,6 +1,6 @@
+
+@import '@fortawesome/fontawesome-svg-core/styles.css';
 @import "tailwindcss";
-
-
 
 @theme {
   --breakpoint-lg: 960px;

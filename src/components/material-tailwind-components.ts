@@ -19,6 +19,7 @@ import {
   DialogFooter,
   Select,
   Option,
+  Tooltip,
 } from '@material-tailwind/react'
 
 export {
@@ -38,5 +39,6 @@ export {
   DialogFooter,
   Select,
   Option,
+  Tooltip,
   type IconButtonProps,
 }

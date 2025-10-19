@@ -7,6 +7,8 @@ import parse from 'html-react-parser'
 import Accordion from './accordian'
 
 import Image from 'next/image'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCode } from '@fortawesome/free-solid-svg-icons'
 type ChangelogProps = {
   entries: Array<ChangelogEntry | GroupedChangelogEntry>
 }
@@ -32,23 +34,26 @@ function IconElem({ entry}: { entry: ChangelogEntry | GroupedChangelogEntry }) {
   }
   else {
     // entry is not group, show one icon
-    let src
     if (entry.subjectId === 'website') {
-      src = `/images/thumbnails/recursio.png`
+      return (
+        <span className="mt-8 h-full w-full flex items-center justify-center 
+        bg-gray-100 dark:bg-neutral-800 rounded-xl border border-gray-200 dark:border-neutral-700">
+          <FontAwesomeIcon icon={faCode} className="text-xl" />
+        </span>
+      )
     }
     else {
       // subject is demo
-      src = `/images/thumbnails/${entry.subjectId}.png`
+      return (
+        <Image
+          width="200"
+          height="200"
+          src={`/images/thumbnails/${entry.subjectId}.png`}
+          className="mt-8 h-full w-full object-cover rounded-xl"
+          alt="name"
+        />
+      )
     }
-    return (
-      <Image
-        width="200"
-        height="200"
-        src={src}
-        className="mt-8 h-full w-full object-cover rounded-xl"
-        alt="name"
-      />
-    )
   }
 }
 

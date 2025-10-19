@@ -4,36 +4,34 @@ import React from 'react'
 
 import {
   Card,
-  Button,
   CardBody,
   Typography,
 } from '@/components/material-tailwind-components'
 
-import { Filter } from '.'
+import { Filter } from '..'
 import Image from 'next/image'
 import { DemoProps } from '@/parsers/demos-parser'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faMusic, faPlay, faTag, faVolumeUp } from '@fortawesome/free-solid-svg-icons'
+import { faListCheck, faMusic, faPlay, faTag, faVolumeUp } from '@fortawesome/free-solid-svg-icons'
 import dateformat from 'dateformat'
-import MiniChangelog from './mini-changelog'
+import MiniChangelog from '../mini-changelog'
+import { IconTag } from './icon-tag'
+import { ButtonTag } from './button-tag'
 
 const visibleTechs = ['multitouch', 'physics', 'three-js'] satisfies Array<Filter>
 type VisibleTech = (typeof visibleTechs)[number]
-
-// for play, tags, and view reports
-const btnClasses = `
-  bg-neutral-0
-  border border-gray-300 hover:border-gray-500
-  hover:bg-neutral-100  light:text-neutral-900 dark:hover:bg-neutral-700
-  cursor-pointer
-`
 
 function PlayButton(demo: DemoProps) {
   return (
     <a
       href={`/${demo.id}`}
-      className={`flex items-center px-2 py-1
-        rounded  transition-shadow shadow-sm text-sm font-medium ${btnClasses}`}
+      className="
+        flex items-center px-2 py-1
+        rounded  transition-shadow shadow-sm text-sm font-medium
+        bg-neutral-0
+        border border-gray-300 hover:border-gray-500
+        hover:bg-neutral-100  light:text-neutral-900 dark:hover:bg-neutral-700
+        cursor-pointer"
       style={{ textDecoration: 'none' }}
       rel="noopener noreferrer"
     >
@@ -47,22 +45,23 @@ export interface DemoCardProps {
   demo: DemoProps
   isSelected: boolean
   onClickCard: () => void // click anywhere in card
-  onViewReports?: () => void // click reports button in card
-  onClickTag: (filter: Filter) => void // click tag/icon in card
+  onViewReports: () => void // click reports button in card
+  onClickTag: (filter: Filter, e?: React.MouseEvent) => void // click tag/icon in card
 }
 
 export function DemoCard(props: DemoCardProps) {
   const { demo } = props
+
   return (
     <Card
       className={`
         hover:border-gray-500 dark:hover:border-white
-        cursor-pointer border border-gray-300 overflow-hidden 
+        border border-gray-300 overflow-hidden 
         
         dark:text-neutral-400
         ${props.isSelected
       ? 'bg-neutral-100  dark:bg-neutral-800'
-      : 'dark:bg-neutral-900'}
+      : 'dark:bg-neutral-900 cursor-pointer'}
       `}
       onClick={props.onClickCard}
     >
@@ -99,61 +98,69 @@ export function DemoCard(props: DemoCardProps) {
             <div className="flex flex-wrap items-center gap-0 m-0">
               {demo.music
                 && (
-                  <FontAwesomeIcon
-                    className="cursor-pointer"
-                    size="sm"
+                  <IconTag
                     icon={faMusic}
-                    onClick={() => props.onClickTag('music')}
+                    onClick={(e?: React.MouseEvent) => props.onClickTag('music', e)}
+                    tooltip="has music"
                   />
                 )}
               {demo.sound
                 && (
-                  <FontAwesomeIcon
-                    className="cursor-pointer"
-                    size="sm"
+                  <IconTag
                     icon={faVolumeUp}
-                    onClick={() => props.onClickTag('sound')}
+                    onClick={(e?: React.MouseEvent) => props.onClickTag('sound', e)}
+                    tooltip="has sound"
+                  />
+                )}
+              {demo.hasReports
+                && (
+                  <IconTag
+                    icon={faListCheck}
+                    onClick={(e?: React.MouseEvent) => props.onClickTag('reports', e)}
+                    tooltip="has reports"
                   />
                 )}
               {(demo.techs ?? []).filter(tech => visibleTechs.includes(tech as VisibleTech)).map((tech, key) => (
-                <Button
+                <ButtonTag
                   key={key}
-                  size="sm"
-                  variant="outlined"
-                  className={`flex items-center px-2 py-1 ${btnClasses}`}
-                  onClick={() => props.onClickTag(tech as Filter)}
-                >
-                  <FontAwesomeIcon className="mr-1 my-1" icon={faTag} />
-                  <span className="inline-block align-text-middle">{tech.replace('-', '.')}</span>
-                </Button>
+                  onClick={(e?: React.MouseEvent) => props.onClickTag(tech as Filter, e)}
+                  icon={faTag}
+                  label={tech.replace('-', '.')}
+                />
               ))}
             </div>
-            {demo.hasReports && (
-              <Button
-                size="sm"
-                variant="outlined"
-                className={`flex items-center px-2 py-1 mt-2 ${btnClasses}`}
-                onClick={props.onViewReports}
-              >
-                <FontAwesomeIcon className="mr-1 my-1" icon={faPlay} />
-                <span className="inline-block align-text-middle text-nowrap">View Reports</span>
-              </Button>
-            )}
           </div>
         </div>
 
-        {/* Extra expandable section for changelog */}
-        {demo.changelog && demo.changelog.length > 0
+        {/* Extra expandable section for changelog + reports */}
+        {((demo.changelog && demo.changelog.length > 0) || demo.hasReports)
           && (
             <div
               className={`
                 transition-all duration-300 overflow-hidden 
-                bg-gray-100 dark:bg-gray-800 rounded p-3
-                ${props.isSelected ? 'max-h-40 opacity-100 mt-4' : 'max-h-0 opacity-0'} 
+                bg-gray-100 dark:bg-gray-800 rounded p-1
+                ${props.isSelected ? 'max-h-40 opacity-100 mt-4' : 'max-h-0 opacity-0'}
               `}
               style={{ pointerEvents: props.isSelected ? 'auto' : 'none' }}
             >
-              <MiniChangelog entries={demo.changelog}></MiniChangelog>
+
+              <div className="flex items-center justify-between">
+                <span>
+                  {(demo.changelog && demo.changelog.length > 0) ? 'Changelog' : ''}
+                </span>
+                {demo.hasReports && (
+                  <ButtonTag
+                    onClick={props.onViewReports}
+                    icon={faListCheck}
+                    label="View Reports"
+                  />
+                )}
+              </div>
+
+              <div className="overflow-y-auto" style={{ maxHeight: '120px' }}>
+                <MiniChangelog entries={demo.changelog}></MiniChangelog>
+              </div>
+
             </div>
           )}
       </CardBody>
