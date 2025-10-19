@@ -8,6 +8,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faExpand } from '@fortawesome/free-solid-svg-icons'
 import Link from 'next/link'
 import { DemoProps } from '@/parsers/demos-parser'
+import styles from './top-bar.module.css'
+import { Tooltip } from '@/components/tooltip'
 
 type NavLinkProps = {
   label: string
@@ -18,14 +20,14 @@ function NavLink({ label, href }: NavLinkProps) {
     <Typography
       as="li"
       variant="small"
-      color="blue-gray"
       className="font-medium h-full"
       style={{ height: '100%' }}
     >
       <a
         href={href}
-        className="flex items-center w-full h-full px-2 hover:text-blue-500 transition-colors"
-        style={{ minHeight: '2.5rem' }}
+        className={`${styles.navLink} w-full h-full px-2 font-light hover:font-normal
+          text-slate-300 hover:text-slate-100 transition-colors`}
+        title={label}
       >
         {label}
       </a>
@@ -48,7 +50,7 @@ function NavList({ headerDemos }: TopBarProps) {
   )
 }
 
-// button on left for small screens - replacement for material-tailwind component
+// button on left for small screens
 function IconButton({ onClick, children }: IconButtonProps) {
   return (
     <button
@@ -96,31 +98,30 @@ export function TopBar(props: TopBarProps) {
   }
 
   return (
-    <Navbar className="
-      text-gray-600 dark:text-neutral-400 dark:bg-neutral-900
-      mx-auto max-w-screen-xl px-6"
-    >
-      <div className="flex items-center justify-between text-blue-gray-900">
+    <Navbar className="bg-neutral-700 dark:bg-neutral-800 w-screen-xl px-6 rounded-none border-none outline-none">
+      <div className="flex items-center justify-between">
 
         <div className="flex">
           <Link href="/" style={{ textDecoration: 'none', color: 'inherit' }}>
             <Typography
               variant="h6"
-              className="mr-4 cursor-pointer py-1.5"
+              className="mr-4 cursor-pointer py-1.5 text-slate-300 hover:text-slate-100 transition-colors"
             >
               tessmero.github.io
             </Typography>
           </Link>
 
           {props.canToggleFullscreen && (
-            <Button
-              size="sm"
-              variant="outlined"
-              className="flex items-center px-2 py-1 border-gray-300"
-              onClick={toggleFullscreen}
-            >
-              <FontAwesomeIcon className="my-1" icon={faExpand} />
-            </Button>
+            <Tooltip tooltip="toggle fullscreen" position="below">
+              <Button
+                variant="outlined"
+                className="text-xl flex items-center px-2 py-1 border-none
+                text-slate-300 hover:text-slate-100 transition-colors"
+                onClick={toggleFullscreen}
+              >
+                <FontAwesomeIcon className="my-1" icon={faExpand} />
+              </Button>
+            </Tooltip>
           )}
         </div>
 
@@ -131,10 +132,10 @@ export function TopBar(props: TopBarProps) {
         <IconButton onClick={() => setOpenNav(!openNav)}>
           {openNav
             ? (
-                <XMarkIcon className="h-6 w-6" strokeWidth={2} />
+                <XMarkIcon className="h-6 w-6 text-slate-300 hover:text-slate-100 transition-colors" strokeWidth={2} />
               )
             : (
-                <Bars3Icon className="h-6 w-6" strokeWidth={2} />
+                <Bars3Icon className="h-6 w-6 text-slate-300 hover:text-slate-100 transition-colors" strokeWidth={2} />
               )}
         </IconButton>
       </div>

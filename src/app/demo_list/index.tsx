@@ -2,6 +2,7 @@
 'use client'
 
 import React, { useState } from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
 import { Button, Card, CardBody, CardHeader } from '@/components/material-tailwind-components'
 import { DemoCard } from './demo-card/demo-card'
 import { DemoProps } from '@/parsers/demos-parser'
@@ -9,10 +10,19 @@ import { Checkbox } from '@/components/checkbox'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSort, faSortDown, faSortUp } from '@fortawesome/free-solid-svg-icons'
 import { ReportsDialog } from './reports-dialog'
-import { MusicPlayer } from '@/components/music-player/music-player'
+import { MusicPlayer } from '@/components/music-player'
 
 const FILTERS = ['reports', 'music', 'sound', 'multitouch', 'physics', 'three-js'] as const
 export type Filter = (typeof FILTERS)[number]
+
+const FILTER_LABELS = {
+  'reports': 'Reports',
+  'music': 'Music',
+  'sound': 'Sound',
+  'multitouch': 'Multitouch',
+  'physics': 'Physics',
+  'three-js': 'Three.js',
+} as const satisfies Record<Filter, string>
 
 type DemoListProps = {
   demos: DemoProps[]
@@ -57,8 +67,8 @@ type SortButtonProps = {
 export default function DemoList({ demos }: DemoListProps) {
   // filter and sort demos in list
   const [selectedFilters, setSelectedFilters] = useState<string[]>([])
-  const [sortKey, setSortKey] = useState<SortKey>(null)
-  const [sortDir, setSortDir] = useState<SortDir>('asc')
+  const [sortKey, setSortKey] = useState<SortKey>('dateAdded')
+  const [sortDir, setSortDir] = useState<SortDir>('desc')
 
   // show one demo as selected
   const [selectedDemoId, setSelectedDemoId] = useState<string | undefined>(undefined)
@@ -83,10 +93,18 @@ export default function DemoList({ demos }: DemoListProps) {
     )
   }
 
+  const handleClickPlay = (demoId: string, e?: React.MouseEvent) => {
+    e?.stopPropagation() // prevent expanding card while next page loads
+    window.location.href = `/${demoId}`
+  }
+
   // clicked tag in demo card -> select one filter and deselect all others
   const handleClickTag = (tag: Filter, e?: React.MouseEvent) => {
-    console.log('handleclicktag')
+    if (selectedFilters.length === 1 && selectedFilters[0] === tag) {
+      return // do nothing, let event propogate to card
+    }
     e?.stopPropagation()
+
     setSelectedDemoId(undefined)
     setSelectedFilters([tag])
     if (tag === 'music')
@@ -99,12 +117,13 @@ export default function DemoList({ demos }: DemoListProps) {
 
   // Sorting logic
   const handleSort = (key: SortKey) => {
+    setSelectedDemoId(undefined)
     if (sortKey === key) {
       setSortDir(prev => (prev === 'asc' ? 'desc' : 'asc'))
     }
     else {
       setSortKey(key)
-      setSortDir('asc')
+      setSortDir('desc')
     }
   }
 
@@ -150,7 +169,11 @@ export default function DemoList({ demos }: DemoListProps) {
       <Button
         size="sm"
         variant="outlined"
-        className={`dark:text-neutral-400 flex items-center px-2 py-1 border-gray-300 ${isActive ? 'font-bold' : ''}`}
+        className={`
+          dark:text-neutral-100 flex items-center px-2 py-1 
+          bg-emerald-300 dark:bg-emerald-700 dark:border-none
+        ${isActive ? 'font-bold border-black' : ''}
+        `}
         onClick={() => handleSort(buttonKey)}
       >
         <FontAwesomeIcon
@@ -168,29 +191,31 @@ export default function DemoList({ demos }: DemoListProps) {
   }
 
   return (
-    <>
-      <Card shadow={false} className="border border-gray-300 dark:bg-neutral-900">
+    <section className="xl:px-80 lg:px-40 md:px-15 sm:px-10 py-10 h-full">
+      <Card shadow={false} className="border-none bg-transparent">
         <CardHeader
           shadow={false}
           floated={false}
-          className="flex overflow-visible gap-y-4 flex-wrap items-start justify-between rounded-none dark:bg-neutral-900"
+          className="flex overflow-visible gap-y-0 flex-wrap mt-0 items-start justify-between rounded-none bg-transparent"
         >
-          <div className="flex flex-wrap items-center gap-2 m-4">
-            <SortButton
-              label="Title"
-              buttonKey="title"
-            />
-            <SortButton
-              label="Date Added"
-              buttonKey="dateAdded"
-            />
-            <SortButton
-              label="Date Updated"
-              buttonKey="dateUpdated"
-            />
-          </div>
-          <div className="flex flex-wrap items-center gap-2 m-4">
-            {/* {selectedFilters.length > 0
+          <div className="flex flex-col">
+
+            <div className="flex flex-wrap items-center gap-2 m-2">
+              <SortButton
+                label="Title"
+                buttonKey="title"
+              />
+              <SortButton
+                label="Date Added"
+                buttonKey="dateAdded"
+              />
+              <SortButton
+                label="Date Updated"
+                buttonKey="dateUpdated"
+              />
+            </div>
+            <div className="flex flex-wrap items-center gap-2 m-2">
+              {/* {selectedFilters.length > 0
               ? (
                   <Button
                     onClick={() => setSelectedFilters([])}
@@ -206,41 +231,52 @@ export default function DemoList({ demos }: DemoListProps) {
                     Filter:
                   </span>
                 )} */}
-            <span className="text-gray-600 dark:text-neutral-400 text-sm">
-              Filter:
-            </span>
+              <span className="text-gray-600 dark:text-neutral-400 text-sm">
+                Filter:
+              </span>
 
-            <div
-              key={selectedFilters.join(',') /* re-render on changing filters */}
-              className="flex flex-wrap items-center gap-2 m-5"
-            >
+              <div
+                key={selectedFilters.join(',') /* re-render on changing filters */}
+                className="flex flex-wrap items-center gap-2 m-0"
+              >
 
-              {FILTERS.map(label => (
-                <Checkbox
-                  key={label}
-                  label={label}
-                  checked={selectedFilters.includes(label)}
-                  onChange={e => handleCheckboxChange(label, e.target.checked)}
-                />
-              ))}
+                {FILTERS.map(filter => (
+                  <Checkbox
+                    key={filter}
+                    label={FILTER_LABELS[filter]}
+                    checked={selectedFilters.includes(filter)}
+                    onChange={e => handleCheckboxChange(filter, e.target.checked)}
+                  />
+                ))}
+              </div>
             </div>
           </div>
         </CardHeader>
-        <CardBody className="grid xl:grid-cols-3 md:grid-cols-2 sx:grid-cols-1 gap-4 px-4 items-start">
-          {sortedDemos.map((demo: DemoProps) => (
-            <div
-              key={demo.id}
-              ref={(el) => { demoRefs.current[demo.id] = el }}
-            >
-              <DemoCard
-                demo={demo}
-                isSelected={demo.id === selectedDemoId}
-                onClickCard={() => handleClickCard(demo.id)}
-                onViewReports={() => handleReportsDialogOpen(demo.id)}
-                onClickTag={handleClickTag}
-              />
-            </div>
-          ))}
+        <CardBody className="grid xl:grid-cols-2 md:grid-cols-2 sx:grid-cols-1 gap-4 px-4 items-start">
+
+          <AnimatePresence>
+            {sortedDemos.map((demo: DemoProps) => (
+              <motion.div
+                key={demo.id}
+                layout
+                ref={(el) => { demoRefs.current[demo.id] = el }}
+                // transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+                // transition={{ type: 'tween' }}
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95, transition: { duration: 0.3 } }}
+              >
+                <DemoCard
+                  demo={demo}
+                  isSelected={demo.id === selectedDemoId}
+                  onClickPlay={e => handleClickPlay(demo.id, e)}
+                  onViewReports={() => handleReportsDialogOpen(demo.id)}
+                  onClickTag={handleClickTag}
+                  onClickCard={() => handleClickCard(demo.id)}
+                />
+              </motion.div>
+            ))}
+          </AnimatePresence>
         </CardBody>
       </Card>
 
@@ -250,7 +286,8 @@ export default function DemoList({ demos }: DemoListProps) {
         handleOpen={handleReportsDialogOpen}
       />
 
-      { musicPlayerOpen && <MusicPlayer></MusicPlayer>}
-    </>
+      { musicPlayerOpen
+        && <MusicPlayer setMusicPlayerOpen={setMusicPlayerOpen} />}
+    </section>
   )
 }

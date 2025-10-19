@@ -5,7 +5,6 @@ import React from 'react'
 import {
   Card,
   CardBody,
-  Typography,
 } from '@/components/material-tailwind-components'
 
 import { Filter } from '..'
@@ -21,36 +20,37 @@ import { ButtonTag } from './button-tag'
 const visibleTechs = ['multitouch', 'physics', 'three-js'] satisfies Array<Filter>
 type VisibleTech = (typeof visibleTechs)[number]
 
-function PlayButton(demo: DemoProps) {
-  return (
-    <a
-      href={`/${demo.id}`}
-      className="
-        flex items-center px-2 py-1
-        rounded  transition-shadow shadow-sm text-sm font-medium
-        bg-neutral-0
-        border border-gray-300 hover:border-gray-500
-        hover:bg-neutral-100  light:text-neutral-900 dark:hover:bg-neutral-700
-        cursor-pointer"
-      style={{ textDecoration: 'none' }}
-      rel="noopener noreferrer"
-    >
-      <FontAwesomeIcon className="mr-1 my-1" icon={faPlay} />
-      <span className="inline-block align-text-middle text-nowrap">{demo.title}</span>
-    </a>
-  )
-}
-
 export interface DemoCardProps {
   demo: DemoProps
   isSelected: boolean
-  onClickCard: () => void // click anywhere in card
+  onClickPlay: (e?: React.MouseEvent) => void
   onViewReports: () => void // click reports button in card
   onClickTag: (filter: Filter, e?: React.MouseEvent) => void // click tag/icon in card
+  onClickCard: () => void // click anywhere else in card
 }
 
 export function DemoCard(props: DemoCardProps) {
   const { demo } = props
+
+  function PlayButton(demo: DemoProps) {
+    return (
+      <a
+        onClick={props.onClickPlay}
+        className="
+          flex items-center px-2 py-1
+          rounded text-sm font-medium
+          bg-neutral-0
+          border border-neutral-500 hover:border-neutral-900
+          hover:bg-neutral-100  light:text-neutral-900 dark:hover:bg-neutral-700
+          cursor-pointer"
+        style={{ textDecoration: 'none' }}
+        rel="noopener noreferrer"
+      >
+        <FontAwesomeIcon className="mr-1 my-1" icon={faPlay} />
+        <span className="inline-block align-text-middle text-nowrap">{demo.title}</span>
+      </a>
+    )
+  }
 
   return (
     <Card
@@ -66,14 +66,8 @@ export function DemoCard(props: DemoCardProps) {
       onClick={props.onClickCard}
     >
       <CardBody className="p-4 z-10">
-        <Typography
-          color="blue-gray"
-          className="!text-base !font-semibold mb-1"
-        >
-          {demo.title}
-        </Typography>
         <div className="flex">
-          <div className="w-25 h-25 relative overflow-hidden rounded-xl mr-4">
+          <div className="w-40 h-25 relative overflow-hidden rounded-xl mr-4">
             <Image
               key={demo.id}
               src={`/images/thumbnails/${demo.id}.png`}
@@ -82,7 +76,7 @@ export function DemoCard(props: DemoCardProps) {
               alt={demo.title}
             />
           </div>
-          <div className="flex flex-col w-50">
+          <div className="flex flex-col w-full">
             <PlayButton {...demo} />
             <div className="text-sm grid grid-cols-2 grid-rows-2 gap-0 m-1">
               <span className="">Added:</span>
@@ -138,16 +132,16 @@ export function DemoCard(props: DemoCardProps) {
             <div
               className={`
                 transition-all duration-300 overflow-hidden 
-                bg-gray-100 dark:bg-gray-800 rounded p-1
+                bg-transparent p-1
                 ${props.isSelected ? 'max-h-40 opacity-100 mt-4' : 'max-h-0 opacity-0'}
               `}
               style={{ pointerEvents: props.isSelected ? 'auto' : 'none' }}
             >
 
-              <div className="flex items-center justify-between">
-                <span>
+              <div className="flex items-center justify-end">
+                {/* <span>
                   {(demo.changelog && demo.changelog.length > 0) ? 'Changelog' : ''}
-                </span>
+                </span> */}
                 {demo.hasReports && (
                   <ButtonTag
                     onClick={props.onViewReports}

@@ -15,6 +15,22 @@ export type ReportsDialogProps = {
 }
 
 export function ReportsDialog({ open, handleOpen, demo }: ReportsDialogProps) {
+  const iframeRef = React.useRef<HTMLIFrameElement>(null)
+  const handleIframeLoad = React.useCallback(() => {
+    const iframe = iframeRef.current
+    if (!iframe) return
+    try {
+      const doc = iframe.contentDocument || iframe.contentWindow?.document
+      if (!doc) return
+      const style = doc.createElement('style')
+      style.innerHTML = `* { background: transparent !important; color: #000 !important; }`
+      doc.head.appendChild(style)
+    }
+    catch (_e) {
+      // Cross-origin, do nothing
+    }
+  }, [])
+
   return (
     <Dialog
       open={open}
@@ -23,24 +39,24 @@ export function ReportsDialog({ open, handleOpen, demo }: ReportsDialogProps) {
         fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
         flex items-center justify-center`}
       style={{
-        maxWidth: 600,
+        maxWidth: 800,
       }}
     >
       <div
-        className="bg-white rounded-lg shadow-lg flex flex-col border"
-        style={{ maxWidth: 600, maxHeight: 600, width: '100%', height: '100%' }}
+        className="bg-stone-300 rounded-lg shadow-lg flex flex-col border"
+        style={{ maxWidth: 800, maxHeight: 800, width: '100%', height: '100%' }}
       >
-        <DialogHeader>
-          {demo?.title}
-          {' '}
-          Reports
+        <DialogHeader className="text-black">
+          {`${demo?.title} Reports`}
         </DialogHeader>
         <DialogBody className="flex-1 p-5" style={{ height: 500 }}>
           <iframe
+            ref={iframeRef}
             className="w-full h-full rounded-b-lg"
             style={{ minHeight: 400, maxHeight: 500, border: 'none' }}
             src={`/iframe/${demo?.id}/reports/index.html`}
             allowFullScreen
+            onLoad={handleIframeLoad}
           />
         </DialogBody>
 

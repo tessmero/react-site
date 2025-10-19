@@ -1,11 +1,13 @@
 'use client'
 
 import React from 'react'
-import './music-player.css' // Import the CSS file
-import { Button } from '../material-tailwind-components'
+import { Button } from './material-tailwind-components'
 import Script from 'next/script'
+import { XMarkIcon } from '@heroicons/react/24/outline'
 
-interface IProps {} // eslint-disable-line @typescript-eslint/no-empty-object-type
+interface IProps {
+  setMusicPlayerOpen: (isOpen: boolean) => void
+}
 
 interface IState {
   volume: number
@@ -29,7 +31,7 @@ function MpButton({ id, onClick, label }: MpButtonProps) {
             bg-neutral-0
             border border-gray-300 hover:border-gray-500
             hover:bg-neutral-100  light:text-neutral-900 dark:hover:bg-neutral-700
-            cursor-pointer
+            cursor-pointer rounded-sm mx-1
           `}
     >
       <span className="inline-block align-text-middle">{label}</span>
@@ -143,14 +145,21 @@ export class MusicPlayer extends React.Component<IProps, IState> {
 
   render() {
     return (
-      <div id="music-player">
+      <div
+        id="music-player"
+        className="fixed bottom-0 left-0 w-full bg-neutral-100 dark:bg-neutral-800 p-2 flex items-center justify-center z-[1000]"
+      >
 
         <Script src="/javascript/lofi-music-manager.js"></Script>
         {this.allSongNames.map(song => (
           <Script key={song} src={`/javascript/songs/${song}.js`}></Script>
         ))}
 
-        <span id="song-player-label" className="hidden-on-small-screen">Song Player</span>
+        <span
+          className="absolute left-2 top-1/2 -translate-y-1/2 font-bold hidden sm:inline"
+        >
+          Song Player
+        </span>
 
         <select
           id="select-song"
@@ -159,6 +168,7 @@ export class MusicPlayer extends React.Component<IProps, IState> {
             this.selectedSongName = e.target.value
             this.forceUpdate()
           }}
+          className="mx-1 px-1 py-0 h-6 text-sm border border-gray-300 rounded bg-white text-black focus:outline-none"
         >
           {this.allSongNames.map(song => (
             <option key={song} value={song}>{song}</option>
@@ -174,10 +184,15 @@ export class MusicPlayer extends React.Component<IProps, IState> {
           min="0"
           max="1"
           step="0.01"
-          className="slider"
+          className="mx-1 cursor-pointer h-2 w-32 accent-blue-500"
           id="musicVolumeSlider"
           value={this.state.volume}
           onChange={this.handleSliderChange}
+        />
+
+        <XMarkIcon
+          className="h-6 w-6 stroke-1 hover:stroke-2 cursor-pointer absolute right-2 top-2"
+          onClick={() => this.props.setMusicPlayerOpen(false)}
         />
       </div>
     )

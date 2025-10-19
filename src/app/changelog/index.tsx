@@ -36,8 +36,9 @@ function IconElem({ entry}: { entry: ChangelogEntry | GroupedChangelogEntry }) {
     // entry is not group, show one icon
     if (entry.subjectId === 'website') {
       return (
-        <span className="mt-8 h-full w-full flex items-center justify-center 
-        bg-gray-100 dark:bg-neutral-800 rounded-xl border border-gray-200 dark:border-neutral-700">
+        <span className="mt-8 h-full w-full flex items-center justify-center
+        bg-gray-100 dark:bg-neutral-800 rounded-xl border border-gray-200 dark:border-neutral-700"
+        >
           <FontAwesomeIcon icon={faCode} className="text-xl" />
         </span>
       )

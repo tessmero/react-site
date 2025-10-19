@@ -18,6 +18,7 @@
     "adm-zip": "^0.5.16",
     "autoprefixer": "^10.4.21",
     "dateformat": "^5.0.3",
+    "framer-motion": "^12.23.24",
     "gray-matter": "^4.0.3",
     "html-react-parser": "^5.2.7",
     "lightningcss": "^1.30.2",
