@@ -1,4 +1,3 @@
-
 import path from 'path'
 import fs from 'fs'
 import { parseMarkdown, parseDate } from './markdown-parser'

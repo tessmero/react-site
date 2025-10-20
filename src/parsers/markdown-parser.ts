@@ -1,7 +1,7 @@
 // hacky fix for dates
 // https://stackoverflow.com/questions/7556591/is-the-javascript-date-object-always-one-day-off
 
-import dateformat from 'dateformat'
+import dateformat from 'dateformat' // eslint-disable-line no-restricted-imports
 import matter from 'gray-matter' // eslint-disable-line no-restricted-imports
 import { ParsedDate } from './changelogs-parser'
 
