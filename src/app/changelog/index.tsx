@@ -13,18 +13,18 @@ type ChangelogProps = {
 }
 
 function IconElem({ entry}: { entry: ChangelogEntry | GroupedChangelogEntry }) {
-  if ('subjectIds' in entry) {
+  if ('subjects' in entry) {
     // entry is group, show stacked icons
     return (
       <div className="mt-8 relative h-[30px] w-[30px] flex items-center">
-        {entry.subjectIds.slice(0, 5).map((id, key) => (
+        {entry.subjects.slice(0, 5).map(({ id }, key) => (
           <Image
             key={key}
             width="200"
             height="200"
             src={`/images/thumbnails/${id}.png`}
             className="absolute top-0 left-0 object-cover rounded-xl shadow-lg"
-            style={{ top: `${key * 10}px`, zIndex: entry.subjectIds.length - key }}
+            style={{ top: `${key * 10}px`, zIndex: entry.subjects.length - key }}
             alt="name"
           />
         ))}
@@ -33,9 +33,10 @@ function IconElem({ entry}: { entry: ChangelogEntry | GroupedChangelogEntry }) {
   }
   else {
     // entry is not group, show one icon
-    if (entry.subjectId === 'website') {
+    if (entry.subject.id === 'website') {
       return (
         <span className="mt-8 h-full w-full flex items-center justify-center
+         dark:text-neutral-200
         bg-gray-100 dark:bg-neutral-800 rounded-xl border border-gray-200 dark:border-neutral-700"
         >
           <FontAwesomeIcon icon={faCode} className="text-xl" />
@@ -48,7 +49,7 @@ function IconElem({ entry}: { entry: ChangelogEntry | GroupedChangelogEntry }) {
         <Image
           width="200"
           height="200"
-          src={`/images/thumbnails/${entry.subjectId}.png`}
+          src={`/images/thumbnails/${entry.subject.id}.png`}
           className="mt-8 h-full w-full object-cover rounded-xl"
           alt="name"
         />
@@ -58,13 +59,13 @@ function IconElem({ entry}: { entry: ChangelogEntry | GroupedChangelogEntry }) {
 }
 
 function SubjectElem({ entry}: { entry: ChangelogEntry | GroupedChangelogEntry }) {
-  if ('subjectTitles' in entry) {
+  if ('subjects' in entry) {
     // entry is group
     return (
-      <Accordion title={`${entry.subjectIds.length} Demos...`}>
+      <Accordion title={`${entry.subjects.length} Demos...`}>
         <ul>
-          {entry.subjectTitles.map((subject, key) => (
-            <li key={key}>{subject}</li>
+          {entry.subjects.map((subject, key) => (
+            <li key={key}><a href={`/demo_list?demoId=${subject.id}`}>{subject.title}</a></li>
           ))}
         </ul>
       </Accordion>
@@ -74,7 +75,7 @@ function SubjectElem({ entry}: { entry: ChangelogEntry | GroupedChangelogEntry }
     // entry is not group
     return (
       <p className="font-semibold text-sm text-gray-800 dark:text-neutral-200">
-        <b>{entry.subjectTitle}</b>
+        <b><a href={`/demo_list?demoId=${entry.subject.id}`}>{entry.subject.title}</a></b>
       </p>
     )
   }
@@ -87,7 +88,7 @@ function EntryElem({ entry}: { entry: ChangelogEntry | GroupedChangelogEntry }) 
             group-last:after:hidden
             after:absolute after:top-8 after:bottom-[-20px] after:start-3 after:w-px
             after:-translate-x-[-5px] after:bg-gray-200 dark:after:bg-neutral-700
-            "
+          "
       >
         <div className="relative z-10 size-8 flex justify-center items-center">
           <IconElem entry={entry}></IconElem>

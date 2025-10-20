@@ -45,9 +45,12 @@ export default function Accordion({ title, children }: AccordionProps) {
         </span>
       </button>
       <div
-        className={`overflow-hidden transition-all duration-300 ease-in-out ${open ? 'max-h-40' : 'max-h-0'}`}
+        className={`
+            overflow-hidden transition-all duration-300 ease-in-out 
+            ${open ? 'max-h-[999px]' : 'max-h-0'}
+          `}
       >
-        <div className="pb-2 text-sm">{children}</div>
+        <div className="pb-2 text-sm dark:text-neutral-400">{children}</div>
       </div>
     </div>
   )

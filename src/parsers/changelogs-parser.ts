@@ -10,15 +10,13 @@ export interface ParsedDate {
 }
 
 export interface ChangelogEntry {
-  subjectId: string // demo id or 'website'
-  subjectTitle: string
+  subject: { id: string, title: string }
   date: ParsedDate
   description: string
 }
 
 export interface GroupedChangelogEntry {
-  subjectIds: string[]
-  subjectTitles: string[]
+  subjects: Array<{ id: string, title: string }>
   date: ParsedDate
   description: string
 }
@@ -69,8 +67,7 @@ export function parseChangelog(data: { changelog?: string[], title?: string }, i
       throw new Error(`changelog should be array (or omitted) in ${filepath}`)
     for (const rawEntry of data.changelog as string[]) {
       changelog.push({
-        subjectId: id,
-        subjectTitle: data.title ?? id,
+        subject: { id, title: data.title ?? id },
         date: parseDate(rawEntry, 'changelog entry'),
         description: rawEntry.substring(rawEntry.indexOf(' ') + 1),
       })
@@ -95,15 +92,16 @@ export function getGroupedChangelog(entries: ChangelogEntry[]): Array<ChangelogE
       && last.description === entry.description
     ) {
       // If last is a GroupedChangelogEntry, add subject
-      if ('subjectIds' in last) {
-        last.subjectIds.push(entry.subjectId)
-        last.subjectTitles.push(entry.subjectTitle)
+      if ('subjects' in last) {
+        last.subjects.push(entry.subject)
       }
       else {
         // Convert last (ChangelogEntry) to GroupedChangelogEntry
         result[result.length - 1] = {
-          subjectIds: [last.subjectId, entry.subjectId],
-          subjectTitles: [last.subjectTitle, entry.subjectTitle],
+          subjects: [
+            last.subject,
+            entry.subject,
+          ],
           date: last.date,
           description: last.description,
         }

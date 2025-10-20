@@ -134,10 +134,10 @@ export class MusicPlayer extends React.Component<IProps, IState> {
     audio.currentTime = 0
     // audio.load()
 
-    console.log('play A')
+    // console.log('play A')
     audio.play().catch(() => {
       audio.addEventListener('canplaythrough', () => {
-        console.log('play B')
+        // console.log('play B')
         audio.play()
       }, { once: true })
     })

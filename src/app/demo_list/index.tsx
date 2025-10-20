@@ -1,7 +1,7 @@
 // client component for demo_list page
 'use client'
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Button, Card, CardBody, CardHeader } from '@/components/material-tailwind-components'
 import { DemoCard } from './demo-card/demo-card'
@@ -72,6 +72,7 @@ export default function DemoList({ demos }: DemoListProps) {
 
   // show one demo as selected
   const [selectedDemoId, setSelectedDemoId] = useState<string | undefined>(undefined)
+
   // ref map for demo cards
   const demoRefs = React.useRef<{ [id: string]: HTMLDivElement | null }>({})
 
@@ -162,6 +163,16 @@ export default function DemoList({ demos }: DemoListProps) {
       demoRefs.current[selectedDemoId]?.scrollIntoView({ behavior: 'smooth', block: 'center' })
     }
   }, [selectedDemoId, sortedDemos])
+
+  //
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    const demoId = params.get('demoId')
+    if (demoId && demos.some(d => d.id === demoId)) {
+      setSelectedDemoId(demoId)
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    }
+  }, [demos])
 
   // button at top of demo_list used to sort demos
   function SortButton({ label, buttonKey }: SortButtonProps) {
