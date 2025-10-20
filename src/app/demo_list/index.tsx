@@ -100,6 +100,9 @@ export default function DemoList({ demos }: DemoListProps) {
 
   // clicked tag in demo card -> select one filter and deselect all others
   const handleClickTag = (tag: Filter, e?: React.MouseEvent) => {
+    if (tag === 'music')
+      setMusicPlayerOpen(true)
+
     if (selectedFilters.length === 1 && selectedFilters[0] === tag) {
       return // do nothing, let event propogate to card
     }
@@ -107,8 +110,6 @@ export default function DemoList({ demos }: DemoListProps) {
 
     setSelectedDemoId(undefined)
     setSelectedFilters([tag])
-    if (tag === 'music')
-      setMusicPlayerOpen(true)
     window.scrollTo({
       top: 0,
       behavior: 'smooth',
