@@ -48,10 +48,10 @@ function getSortValue(demo: DemoProps, sortKey: string): number | string {
     return demo.title.toLowerCase()
   }
   else if (sortKey === 'dateAdded') {
-    return demo.date.getTime()
+    return demo.date.iDate
   }
   else if (sortKey === 'dateUpdated') {
-    return demo.lastUpdated?.getTime() ?? 0
+    return demo.lastUpdated?.iDate ?? 0
   }
   return 0
 }

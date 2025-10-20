@@ -68,6 +68,11 @@ const eslintConfig = [
               name: 'gray-matter',
               message: 'Instead use @/parsers/markdown-parser.ts',
             },
+            {
+              // workaround dates being offset by one day when parsed
+              name: 'dateformat',
+              message: 'Should only be used in markdown-parser.ts',
+            },
           ],
         },
       ],

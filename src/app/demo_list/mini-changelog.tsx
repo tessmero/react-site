@@ -2,7 +2,6 @@
 'use client'
 
 import { ChangelogEntry } from '@/parsers/changelogs-parser'
-import dateformat from 'dateformat'
 import parse from 'html-react-parser'
 
 type MiniChangelogProps = {
@@ -28,7 +27,7 @@ function EntryElem({ entry}: { entry: ChangelogEntry }) {
 
       <div className="grow pb-3 group-last:pb-0">
         <h3 className="mb-1 text-xs text-gray-600 dark:text-neutral-400">
-          {dateformat(entry.date, 'yyyy-mm-dd')}
+          {entry.date.sDate}
         </h3>
 
         <p className="mt-1 text-sm text-gray-600 dark:text-neutral-400">

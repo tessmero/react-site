@@ -1,20 +1,26 @@
+
 import path from 'path'
 import fs from 'fs'
 import { parseMarkdown, parseDate } from './markdown-parser'
 
 const websiteChangelogFile = path.join(process.cwd(), '_changelogs/website.md')
 
+export interface ParsedDate {
+  sDate: string
+  iDate: number
+}
+
 export interface ChangelogEntry {
   subjectId: string // demo id or 'website'
   subjectTitle: string
-  date: Date
+  date: ParsedDate
   description: string
 }
 
 export interface GroupedChangelogEntry {
   subjectIds: string[]
   subjectTitles: string[]
-  date: Date
+  date: ParsedDate
   description: string
 }
 
@@ -77,7 +83,7 @@ export function parseChangelog(data: { changelog?: string[], title?: string }, i
 // group entries with matching date and description
 export function getGroupedChangelog(entries: ChangelogEntry[]): Array<ChangelogEntry | GroupedChangelogEntry> {
   // Sort entries by date descending (most recent first)
-  const sorted = [...entries].sort((a, b) => b.date.getTime() - a.date.getTime())
+  const sorted = [...entries].sort((a, b) => b.date.iDate - a.date.iDate)
 
   // Group by date+description
   const result: Array<ChangelogEntry | GroupedChangelogEntry> = []
@@ -86,7 +92,7 @@ export function getGroupedChangelog(entries: ChangelogEntry[]): Array<ChangelogE
     const last = result[result.length - 1]
     if (
       last
-      && last.date.getTime() === entry.date.getTime()
+      && last.date.iDate === entry.date.iDate
       && last.description === entry.description
     ) {
       // If last is a GroupedChangelogEntry, add subject

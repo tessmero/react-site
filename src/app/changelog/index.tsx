@@ -2,7 +2,6 @@
 'use client'
 
 import { ChangelogEntry, GroupedChangelogEntry } from '@/parsers/changelogs-parser'
-import dateformat from 'dateformat'
 import parse from 'html-react-parser'
 import Accordion from './accordian'
 
@@ -97,7 +96,7 @@ function EntryElem({ entry}: { entry: ChangelogEntry | GroupedChangelogEntry }) 
 
       <div className="grow pb-8 group-last:pb-0">
         <h3 className="mb-1 text-xs text-gray-600 dark:text-neutral-400">
-          {dateformat(entry.date, 'yyyy-mm-dd')}
+          {entry.date.sDate}
         </h3>
 
         <SubjectElem entry={entry}></SubjectElem>

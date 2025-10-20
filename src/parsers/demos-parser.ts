@@ -1,8 +1,10 @@
+
+
 import fs from 'fs'
 import path from 'path'
 import AdmZip from 'adm-zip'
-import { ChangelogEntry, parseChangelog } from './changelogs-parser'
-import { parseMarkdown } from './markdown-parser'
+import { ChangelogEntry, parseChangelog, ParsedDate } from './changelogs-parser'
+import { parseDate, parseMarkdown } from './markdown-parser'
 
 const demosDir = path.join(process.cwd(), '_demos')
 const zipsDir = path.join(process.cwd(), '_zips')
@@ -15,8 +17,8 @@ export interface DemoProps {
 
   // frontmatter
   title: string
-  date: Date
-  lastUpdated?: Date
+  date: ParsedDate
+  lastUpdated?: ParsedDate
   changelog: ChangelogEntry[]
   techs?: string[]
   sound?: boolean
@@ -86,8 +88,8 @@ export function getDemosMetadata(): DemoProps[] {
     return {
       id,
       title: data.title,
-      date: data.date,
-      lastUpdated: data.lastUpdated,
+      date: parseDate(data.date, `demo date ${id}`),
+      lastUpdated: data.lastUpdated ? parseDate(data.lastUpdated, `demo lastUpdated ${id}`) : undefined,
       changelog,
       techs: data.techs,
       sound: data.sound,

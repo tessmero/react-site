@@ -12,7 +12,6 @@ import Image from 'next/image'
 import { DemoProps } from '@/parsers/demos-parser'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faListCheck, faMusic, faPlay, faTag, faVolumeUp } from '@fortawesome/free-solid-svg-icons'
-import dateformat from 'dateformat'
 import MiniChangelog from '../mini-changelog'
 import { IconTag } from './icon-tag'
 import { ButtonTag } from './button-tag'
@@ -81,11 +80,11 @@ export function DemoCard(props: DemoCardProps) {
             <div className="text-sm grid grid-cols-2 grid-rows-2 gap-0 m-1">
               <span className="">Added:</span>
               {' '}
-              <span>{dateformat(demo.date, 'yyyy-mm-dd')}</span>
+              <span>{demo.date.sDate}</span>
               {demo.lastUpdated && (
                 <>
                   <span className="">Updated:</span>
-                  <span>{dateformat(demo.lastUpdated, 'yyyy-mm-dd')}</span>
+                  <span>{demo.lastUpdated.sDate}</span>
                 </>
               )}
             </div>
