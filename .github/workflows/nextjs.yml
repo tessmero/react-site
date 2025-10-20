@@ -62,7 +62,7 @@ jobs:
           # You may remove this line if you want to manage the configuration yourself.
           static_site_generator: next
       - name: Clean output directory
-        run: rm -rf ./out/* && echo 'hello world' > ./out/index.html
+        run: rm -rf ./out/* && mkdir out && echo 'hello world' > ./out/index.html
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
