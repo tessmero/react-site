@@ -31,7 +31,10 @@ export default function RootLayout({
         `}
         style={{ minHeight: '100vh' }}
       >
+
+        {/* music-manager only used for music player easter egg */}
         <Script src="/javascript/lofi-music-manager.js" strategy="beforeInteractive"></Script>
+
         <ThemeProvider>
           {navbar}
           <main className="flex-1 flex flex-col min-h-0">{children}</main>
@@ -39,7 +42,7 @@ export default function RootLayout({
             className="fixed bottom-0 left-1/2 -translate-x-1/2 z-50 px-[2px] py-[1px] text-[10px] bg-black text-white"
             style={{ pointerEvents: 'none' }}
           >
-            <span>{`© 2023 - ${new Date().getFullYear()} Oliver Tessmer`}</span>
+            <span>© 2023 - 2025 Oliver Tessmer</span>
           </footer>
         </ThemeProvider>
       </body>

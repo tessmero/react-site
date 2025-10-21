@@ -184,7 +184,7 @@ export default function DemoList({ demos }: DemoListProps) {
         className={`
           dark:text-neutral-100 flex items-center px-2 py-1 
           bg-emerald-300 dark:bg-emerald-700 dark:border-none
-        ${isActive ? 'font-bold border-black' : ''}
+          ${isActive ? 'font-bold border-black' : ''}
         `}
         onClick={() => handleSort(buttonKey)}
       >

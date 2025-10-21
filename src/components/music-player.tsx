@@ -30,7 +30,8 @@ function MpButton({ id, onClick, label }: MpButtonProps) {
             flex items-center px-2 py-1
             bg-neutral-0
             border border-gray-300 hover:border-gray-500
-            hover:bg-neutral-100  light:text-neutral-900 dark:hover:bg-neutral-700
+            hover:bg-neutral-100  text-neutral-900 dark:hover:bg-neutral-700
+            dark:text-neutral-400
             cursor-pointer rounded-sm mx-1
           `}
     >
@@ -157,7 +158,8 @@ export class MusicPlayer extends React.Component<IProps, IState> {
         ))}
 
         <span
-          className="absolute left-2 top-1/2 -translate-y-1/2 font-bold hidden sm:inline"
+          className="absolute left-2 top-1/2 -translate-y-1/2 font-bold hidden sm:inline
+            dark:text-neutral-400"
         >
           Song Player
         </span>
@@ -192,7 +194,8 @@ export class MusicPlayer extends React.Component<IProps, IState> {
         />
 
         <XMarkIcon
-          className="h-6 w-6 stroke-1 hover:stroke-2 cursor-pointer absolute right-2 top-2"
+          className="h-6 w-6 stroke-1 hover:stroke-2 cursor-pointer absolute right-2 top-2
+            dark:text-neutral-400"
           onClick={() => this.props.setMusicPlayerOpen(false)}
         />
       </div>

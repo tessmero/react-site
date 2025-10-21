@@ -40,7 +40,8 @@ export function DemoCard(props: DemoCardProps) {
           rounded text-sm font-medium
           bg-neutral-0
           border border-neutral-500 hover:border-neutral-900
-          hover:bg-neutral-100  light:text-neutral-900 dark:hover:bg-neutral-700
+          hover:bg-neutral-100  text-neutral-900 dark:hover:bg-neutral-700
+          dark:text-neutral-400
           cursor-pointer"
         style={{ textDecoration: 'none' }}
         rel="noopener noreferrer"
@@ -56,7 +57,6 @@ export function DemoCard(props: DemoCardProps) {
       className={`
         hover:border-gray-500 dark:hover:border-white
         border border-gray-300 overflow-hidden 
-        
         dark:text-neutral-400
         ${props.isSelected
       ? 'bg-neutral-100  dark:bg-neutral-800'

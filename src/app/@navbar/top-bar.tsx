@@ -1,15 +1,14 @@
 'use client'
 
 import React from 'react'
-import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 
-import { Button, Collapse, IconButtonProps, Navbar, Typography } from '@/components/material-tailwind-components'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faExpand } from '@fortawesome/free-solid-svg-icons'
+import { Collapse, Navbar, Typography } from '@/components/material-tailwind-components'
+import { faBars, faExpand, faX } from '@fortawesome/free-solid-svg-icons'
 import Link from 'next/link'
 import { DemoProps } from '@/parsers/demos-parser'
 import styles from './top-bar.module.css'
 import { Tooltip } from '@/components/tooltip'
+import { IconButton } from './icon-button'
 
 type NavLinkProps = {
   label: string
@@ -26,7 +25,7 @@ function NavLink({ label, href }: NavLinkProps) {
       <a
         href={href}
         className={`${styles.navLink} w-full h-full px-2 font-light hover:font-normal
-          text-slate-300 hover:text-slate-100 transition-colors`}
+          text-slate-300 hover:text-slate-100 transition-colors text-right`}
         title={label}
       >
         {label}
@@ -47,26 +46,6 @@ function NavList({ headerDemos }: TopBarProps) {
       <NavLink href="/demo_list" label="More..." />
       <NavLink href="/changelog" label="Changelog" />
     </ul>
-  )
-}
-
-// button on left for small screens
-function IconButton({ onClick, children }: IconButtonProps) {
-  return (
-    <button
-      className="
-    relative align-middle select-none font-sans font-medium text-center
-    uppercase transition-all disabled:opacity-50 disabled:shadow-none
-    disabled:pointer-events-none max-w-[40px] max-h-[40px] rounded-lg
-    text-xs ml-auto h-6 w-6 text-inherit hover:bg-transparent
-    focus:bg-transparent active:bg-transparent lg:hidden"
-      type="button"
-      onClick={onClick}
-    >
-      <span className="">
-        {children}
-      </span>
-    </button>
   )
 }
 
@@ -101,7 +80,7 @@ export function TopBar(props: TopBarProps) {
     <Navbar className="bg-neutral-700 dark:bg-neutral-800 w-screen-xl px-6 rounded-none border-none outline-none">
       <div className="flex items-center justify-between">
 
-        <div className="flex">
+        <div className="flex items-center">
           <Link href="/" style={{ textDecoration: 'none', color: 'inherit' }}>
             <Typography
               variant="h6"
@@ -113,31 +92,21 @@ export function TopBar(props: TopBarProps) {
 
           {props.canToggleFullscreen && (
             <Tooltip tooltip="toggle fullscreen" position="below">
-              <Button
-                variant="outlined"
-                className="text-xl flex items-center px-2 py-1 border-none
-                text-slate-300 hover:text-slate-100 transition-colors"
-                onClick={toggleFullscreen}
-              >
-                <FontAwesomeIcon className="my-1" icon={faExpand} />
-              </Button>
+              <IconButton onClick={toggleFullscreen} icon={faExpand} />
             </Tooltip>
           )}
         </div>
 
-        <div className="hidden lg:block">
-          <NavList {...props} />
+        <div className="flex">
+          <div className="hidden lg:block">
+            <NavList {...props} />
+          </div>
+          <IconButton
+            className="block lg:hidden"
+            onClick={() => setOpenNav(!openNav)}
+            icon={openNav ? faX : faBars}
+          />
         </div>
-
-        <IconButton onClick={() => setOpenNav(!openNav)}>
-          {openNav
-            ? (
-                <XMarkIcon className="h-6 w-6 text-slate-300 hover:text-slate-100 transition-colors" strokeWidth={2} />
-              )
-            : (
-                <Bars3Icon className="h-6 w-6 text-slate-300 hover:text-slate-100 transition-colors" strokeWidth={2} />
-              )}
-        </IconButton>
       </div>
       <Collapse open={openNav} className="lg:hidden overflow-hidden">
         <NavList {...props} />

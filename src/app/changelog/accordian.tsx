@@ -16,7 +16,7 @@ export default function Accordion({ title, children }: AccordionProps) {
     <div className="max-w-30">
       <button
         type="button"
-        className="w-full h-1 flex justify-between items-center py-2 font-semibold text-sm  light:text-gray-800 dark:text-neutral-200"
+        className="w-full h-1 flex justify-between items-center py-2 font-semibold text-sm  text-gray-800 dark:text-neutral-200"
         onClick={() => setOpen(v => !v)}
       >
         <b>{title}</b>

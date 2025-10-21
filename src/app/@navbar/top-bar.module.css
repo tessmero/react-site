@@ -1,9 +1,7 @@
-
-
+/* prevent nav links from changing layout when switching to bolder font on hover */
 .navLink {
   display: block;
 }
-
 .navLink::after {
   display: block;
   content: attr(title);

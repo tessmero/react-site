@@ -13,9 +13,13 @@ export function Checkbox(props: CheckBoxProps) {
       <label className="flex items-center cursor-pointer relative" htmlFor={id}>
         <input
           type="checkbox"
-          className="peer h-4 w-4 cursor-pointer transition-all appearance-none
-          border border-slate-300 hover:border-black rounded-none
-          checked:bg-slate-800 checked:border-slate-800"
+          className="
+            peer h-4 w-4 cursor-pointer transition-all appearance-none
+            border border-slate-300 hover:border-black rounded-none
+            bg-white dark:bg-neutral-500
+            checked:bg-neutral-800 checked:border-neutral-800
+            dark:checked:bg-black dark:checked:border-neutral-800
+          "
           id={id}
           onChange={props.onChange}
           defaultChecked={props.checked}

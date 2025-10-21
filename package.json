@@ -13,7 +13,6 @@
     "@fortawesome/fontawesome-svg-core": "^7.1.0",
     "@fortawesome/free-solid-svg-icons": "^7.1.0",
     "@fortawesome/react-fontawesome": "^3.1.0",
-    "@heroicons/react": "^2.2.0",
     "@material-tailwind/react": "^2.1.10",
     "adm-zip": "^0.5.16",
     "autoprefixer": "^10.4.21",

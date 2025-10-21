@@ -10,7 +10,6 @@ import {
   Typography,
   CardFooter,
   Input,
-  IconButtonProps,
   Navbar,
   Collapse,
   Dialog,
@@ -40,5 +39,4 @@ export {
   Select,
   Option,
   Tooltip,
-  type IconButtonProps,
 }

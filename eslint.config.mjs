@@ -13,6 +13,11 @@ const compat = new FlatCompat({
 
 const eslintConfig = [
   {
+    plugins: {
+      'unused-imports': unusedImports,
+    },
+  },
+  {
     ignores: [
       'node_modules/**',
       '.next/**',
@@ -31,11 +36,6 @@ const eslintConfig = [
     'next/typescript',
   ),
   stylistic.configs.recommended,
-  {
-    plugins: {
-      'unused-imports': unusedImports,
-    },
-  },
   {
     rules: {
 
