@@ -3,7 +3,8 @@
 import React from 'react'
 import { Button } from './material-tailwind-components'
 import Script from 'next/script'
-import { XMarkIcon } from '@heroicons/react/24/outline'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faX } from '@fortawesome/free-solid-svg-icons'
 
 interface IProps {
   setMusicPlayerOpen: (isOpen: boolean) => void
@@ -193,9 +194,11 @@ export class MusicPlayer extends React.Component<IProps, IState> {
           onChange={this.handleSliderChange}
         />
 
-        <XMarkIcon
+        <FontAwesomeIcon
           className="h-6 w-6 stroke-1 hover:stroke-2 cursor-pointer absolute right-2 top-2
-            dark:text-neutral-400"
+            dark:text-neutral-400 dark:hover:text-neutral-300
+            text-neutral-900"
+          icon={faX}
           onClick={() => this.props.setMusicPlayerOpen(false)}
         />
       </div>
