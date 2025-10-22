@@ -1,10 +1,10 @@
 // server component used to build static changelog page
 
 import { ChangelogEntry, getCachedWebsiteChangelog, getGroupedChangelog } from '@/parsers/changelogs-parser'
-import Changelog from '.'
+import Changelog2 from '.'
 import { getCachedDemos } from '@/parsers/demos-parser'
 
-export default function ChangelogPage() {
+export default function Changelog2Page() {
   // collect entries from all changelogs
   const demos = getCachedDemos()
   const websiteChangelog = getCachedWebsiteChangelog()
@@ -18,5 +18,5 @@ export default function ChangelogPage() {
   // sort entries and group those with matching date and description
   const groupedEntries = getGroupedChangelog(entries)
 
-  return <Changelog entries={groupedEntries} />
+  return <Changelog2 entries={groupedEntries} />
 }

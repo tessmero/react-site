@@ -15,12 +15,12 @@ const geistMono = Geist_Mono({
   subsets: ['latin'],
 })
 
-export default function RootLayout({
-  children, navbar,
-}: Readonly<{
+type RootLayoutProps = Readonly<{
   children: React.ReactNode
   navbar: React.ReactNode
-}>) {
+}>
+
+export default function RootLayout({ children, navbar }: RootLayoutProps) {
   return (
     <html lang="en" className="h-full">
       <body

@@ -110,7 +110,7 @@ function EntryElem({ entry}: { entry: ChangelogEntry | GroupedChangelogEntry }) 
   )
 }
 
-export default function Changelog({ entries }: ChangelogProps) {
+export default function Changelog2({ entries }: ChangelogProps) {
   return (
     <section className="px-8 py-10">
       <div className="w-full max-w-xl mx-auto">

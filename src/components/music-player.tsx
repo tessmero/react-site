@@ -6,7 +6,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faX } from '@fortawesome/free-solid-svg-icons'
 
 interface IProps {
-  setMusicPlayerOpen: (isOpen: boolean) => void
+  setMusicPlayerOpen?: (isOpen: boolean) => void
+  className?: string
 }
 
 interface IState {
@@ -149,11 +150,9 @@ export class MusicPlayer extends React.Component<IProps, IState> {
     return (
       <div
         id="music-player"
-        className="
-        fixed bottom-0 left-0 w-full bg-neutral-100 dark:bg-neutral-800 p-2 flex
+        className={` fixed bottom-0 left-0 w-full bg-neutral-100 dark:bg-neutral-800 p-2 flex
         items-center justify-center z-[1000]
-        text-xs sm:text-md
-        "
+        text-xs sm:text-md ${this.props.className ?? ''}`}
       >
         {/* moved to src/app/layout.tsx to make sure it loads first
           <Script src="/javascript/lofi-music-manager.js"></Script>
@@ -200,13 +199,15 @@ export class MusicPlayer extends React.Component<IProps, IState> {
           onChange={this.handleSliderChange}
         />
 
-        <FontAwesomeIcon
-          className="h-6 w-6 stroke-1 hover:stroke-2 cursor-pointer absolute right-2
+        {this.props.setMusicPlayerOpen && (
+          <FontAwesomeIcon
+            className="h-6 w-6 stroke-1 hover:stroke-2 cursor-pointer absolute right-2
             dark:text-neutral-400 dark:hover:text-neutral-300
             text-neutral-900"
-          icon={faX}
-          onClick={() => this.props.setMusicPlayerOpen(false)}
-        />
+            icon={faX}
+            onClick={() => this.props.setMusicPlayerOpen!(false)}
+          />
+        )}
       </div>
     )
   }
