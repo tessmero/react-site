@@ -43,7 +43,6 @@ export function DemoCard(props: DemoCardProps) {
           hover:bg-neutral-100  text-neutral-900 dark:hover:bg-neutral-700
           dark:text-neutral-400
           cursor-pointer"
-        style={{ textDecoration: 'none' }}
         rel="noopener noreferrer"
       >
         <FontAwesomeIcon className="mr-1 my-1" icon={faPlay} />
@@ -66,7 +65,9 @@ export function DemoCard(props: DemoCardProps) {
     >
       <CardBody className="p-4 z-10">
         <div className="flex">
-          <div className="w-40 h-25 relative overflow-hidden rounded-xl mr-4">
+          <div className="w-30 sm:w-40
+          h-25 relative overflow-hidden rounded-xl mr-4"
+          >
             <Image
               key={demo.id}
               src={`/images/thumbnails/${demo.id}.png`}

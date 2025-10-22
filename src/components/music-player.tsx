@@ -1,7 +1,6 @@
 'use client'
 
 import React from 'react'
-import { Button } from './material-tailwind-components'
 import Script from 'next/script'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faX } from '@fortawesome/free-solid-svg-icons'
@@ -22,22 +21,23 @@ type MpButtonProps = {
 
 function MpButton({ id, onClick, label }: MpButtonProps) {
   return (
-    <Button
+    <input
+      type="button"
       id={id}
       onClick={onClick}
-      size="sm"
-      variant="outlined"
+      value={label}
       className={`
+            w-13 sm:w-15
             flex items-center px-2 py-1
             bg-neutral-0
             border border-gray-300 hover:border-gray-500
             hover:bg-neutral-100  text-neutral-900 dark:hover:bg-neutral-700
             dark:text-neutral-400
             cursor-pointer rounded-sm mx-1
+
           `}
     >
-      <span className="inline-block align-text-middle">{label}</span>
-    </Button>
+    </input>
   )
 }
 
@@ -149,7 +149,11 @@ export class MusicPlayer extends React.Component<IProps, IState> {
     return (
       <div
         id="music-player"
-        className="fixed bottom-0 left-0 w-full bg-neutral-100 dark:bg-neutral-800 p-2 flex items-center justify-center z-[1000]"
+        className="
+        fixed bottom-0 left-0 w-full bg-neutral-100 dark:bg-neutral-800 p-2 flex
+        items-center justify-center z-[1000]
+        text-xs sm:text-md
+        "
       >
         {/* moved to src/app/layout.tsx to make sure it loads first
           <Script src="/javascript/lofi-music-manager.js"></Script>
@@ -172,7 +176,9 @@ export class MusicPlayer extends React.Component<IProps, IState> {
             this.selectedSongName = e.target.value
             this.forceUpdate()
           }}
-          className="mx-1 px-1 py-0 h-6 text-sm border border-gray-300 rounded bg-white text-black focus:outline-none"
+          className="
+          mx-1 px-1 py-0 h-6 text-sm border border-gray-300
+          rounded bg-white text-black focus:outline-none"
         >
           {this.allSongNames.map(song => (
             <option key={song} value={song}>{song}</option>
@@ -188,14 +194,14 @@ export class MusicPlayer extends React.Component<IProps, IState> {
           min="0"
           max="1"
           step="0.01"
-          className="mx-1 cursor-pointer h-2 w-32 accent-blue-500"
+          className="hidden sm:inline mx-1 cursor-pointer h-2 sm:w-32 w-20 accent-blue-500"
           id="musicVolumeSlider"
           value={this.state.volume}
           onChange={this.handleSliderChange}
         />
 
         <FontAwesomeIcon
-          className="h-6 w-6 stroke-1 hover:stroke-2 cursor-pointer absolute right-2 top-2
+          className="h-6 w-6 stroke-1 hover:stroke-2 cursor-pointer absolute right-2
             dark:text-neutral-400 dark:hover:text-neutral-300
             text-neutral-900"
           icon={faX}
