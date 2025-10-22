@@ -15,6 +15,7 @@ import { faListCheck, faMusic, faPlay, faTag, faVolumeUp } from '@fortawesome/fr
 import MiniChangelog from '../mini-changelog'
 import { IconTag } from './icon-tag'
 import { ButtonTag } from './button-tag'
+import { faGithub } from '@fortawesome/free-brands-svg-icons'
 
 const visibleTechs = ['multitouch', 'physics', 'three-js'] satisfies Array<Filter>
 type VisibleTech = (typeof visibleTechs)[number]
@@ -122,6 +123,18 @@ export function DemoCard(props: DemoCardProps) {
                   label={tech.replace('-', '.')}
                 />
               ))}
+              {demo.source && (
+                <ButtonTag
+                  onClick={(e?: React.MouseEvent) => {
+                    e?.stopPropagation() // do not expand card
+
+                    // open source repo in new tab
+                    window.open(demo.source as string, '_blank', 'noopener,noreferrer')
+                  }}
+                  icon={faGithub}
+                  label="Open Source"
+                />
+              )}
             </div>
           </div>
         </div>

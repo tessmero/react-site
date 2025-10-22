@@ -3,6 +3,14 @@ layout: demo
 title: "Sea Block"
 date: 2025-06-16
 lastUpdated: 2025-09-11
+hasReports: true
+sound: true
+music: true
+source: https://github.com/tessmero/sea-block
+techs:
+  - multitouch
+  - physics
+  - three-js
 changelog:
   - "2025-09-11 Fix race conditions on startup, chess game and scenery not resetting, inactive gamepad devices interfering, camera jumping on toggling settings menu"
   - 2025-09-03 Add start menu, gamepad support, 'raft' game inspired by Scrap Mechanic.
@@ -25,13 +33,6 @@ changelog:
   - 2025-06-24 Add color styles.
   - 2025-06-22 Add triangle and octagon tiling modes.
   - 2025-06-21 Add hex tiling mode and physics controls.
-hasReports: true
-sound: true
-music: true
-techs:
-  - multitouch
-  - physics
-  - three-js
 ---
 
 

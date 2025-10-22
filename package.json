@@ -4,13 +4,14 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build --turbopack",
+    "build": "next build --turbopack && cp out/sea-block.html out/index.html",
     "start": "next start",
     "postinstall": "patch-package",
     "lint": "eslint"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^7.1.0",
+    "@fortawesome/free-brands-svg-icons": "^7.1.0",
     "@fortawesome/free-solid-svg-icons": "^7.1.0",
     "@fortawesome/react-fontawesome": "^3.1.0",
     "@material-tailwind/react": "^2.1.10",

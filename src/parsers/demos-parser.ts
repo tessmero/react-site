@@ -17,6 +17,7 @@ export interface DemoProps {
   title: string
   date: ParsedDate
   lastUpdated?: ParsedDate
+  source?: string
   changelog: ChangelogEntry[]
   techs?: string[]
   sound?: boolean
@@ -89,6 +90,7 @@ export function getDemosMetadata(): DemoProps[] {
       date: parseDate(data.date, `demo date ${id}`),
       lastUpdated: data.lastUpdated ? parseDate(data.lastUpdated, `demo lastUpdated ${id}`) : undefined,
       changelog,
+      source: data.source,
       techs: data.techs,
       sound: data.sound,
       hidden: data.hidden,

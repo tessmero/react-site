@@ -9,6 +9,7 @@ import { DemoProps } from '@/parsers/demos-parser'
 import styles from './top-bar.module.css'
 import { Tooltip } from '@/components/tooltip'
 import { IconButton } from './icon-button'
+import { faGithub } from '@fortawesome/free-brands-svg-icons'
 
 type NavLinkProps = {
   label: string
@@ -93,6 +94,19 @@ export function TopBar(props: TopBarProps) {
           {props.canToggleFullscreen && (
             <Tooltip tooltip="toggle fullscreen" position="below">
               <IconButton onClick={toggleFullscreen} icon={faExpand} />
+            </Tooltip>
+          )}
+
+          {!props.canToggleFullscreen && (
+            <Tooltip tooltip="check me out on github" position="below">
+              <IconButton
+                onClick={() => {
+                  // open source repo in new tab
+                  window.open('https://github.com/tessmero/tessmero.github.io',
+                    '_blank', 'noopener,noreferrer')
+                }}
+                icon={faGithub}
+              />
             </Tooltip>
           )}
         </div>

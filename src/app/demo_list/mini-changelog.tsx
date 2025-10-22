@@ -1,4 +1,4 @@
-// client component for changelog page
+// miniature changelog on selected demo card in demo_list
 'use client'
 
 import { ChangelogEntry } from '@/parsers/changelogs-parser'

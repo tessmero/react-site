@@ -1,9 +1,8 @@
 # react-site
 
-Updated version of tessmero.github.io based on [React](https://react.dev/).
+Updated version of tessmero.github.io, migrated from Jekyll/Bootstrap to [NextJS](https://nextjs.org/)/[Tailwind](https://tailwindcss.com/).
 
-Migrated from Jekyll/Bootstrap to [NextJS](https://nextjs.org/)/[Tailwind](https://tailwindcss.com/).
-
+[old website repo](https://github.com/tessmero/old-tessmero.github.io) 
 [old website template](https://nicolas-van.github.io/bootstrap-4-github-pages/)
 
 <details>
@@ -39,6 +38,12 @@ Start local development server
 npm run dev
 ```
 
+Enforce coding style standards defined in `eslint.config.mjs`
+
+```bash
+npx eslint --fix
+```
+
 Build static website, output in ```out```
 
 ```bash
@@ -55,10 +60,10 @@ python3 -m http.server
 ### Adding Routes
 
 Add a subfolder under `src/app` to define a new route.
-- Define the "server-side" logic in `page.tsx` 
+- Define "server-side" logic in `page.tsx` 
   - e.g. loading a list of demos 
   - runs at build-time when we generate the static website
-- Define the client-side logic in `index.tsx` with `'use client'`
+- Define client-side logic in `index.tsx` with `'use client'`
     - e.g. sorting and filtering demos
     - runs on the user's web browser interactively
 - Add a corresponding `page.tsx` under `src/app/@navbar` 

@@ -12,7 +12,7 @@ import { faSort, faSortDown, faSortUp } from '@fortawesome/free-solid-svg-icons'
 import { ReportsDialog } from './reports-dialog'
 import { MusicPlayer } from '@/components/music-player'
 
-const FILTERS = ['reports', 'music', 'sound', 'multitouch', 'physics', 'three-js'] as const
+const FILTERS = ['reports', 'music', 'sound', 'multitouch', 'physics', 'three-js', 'open-source'] as const
 export type Filter = (typeof FILTERS)[number]
 
 const FILTER_LABELS = {
@@ -22,6 +22,7 @@ const FILTER_LABELS = {
   'multitouch': 'Multitouch',
   'physics': 'Physics',
   'three-js': 'Three.js',
+  'open-source': 'Open Source',
 } as const satisfies Record<Filter, string>
 
 type DemoListProps = {
@@ -36,6 +37,8 @@ function checkFilter(filter: Filter, demo: DemoProps): boolean {
     return !!demo.music
   if (filter === 'sound')
     return !!demo.sound
+  if (filter === 'open-source')
+    return !!demo.source
 
   // filter is a tech
   if (!demo.techs) return false
@@ -79,7 +82,7 @@ export default function DemoList({ demos }: DemoListProps) {
   // show reports dialog for one demo
   const [reportsDialogOpen, setReportsDialogOpen] = useState(false)
   const handleReportsDialogOpen = (demoId?: string) => {
-    setSelectedDemoId(demoId)
+    if (demoId) setSelectedDemoId(demoId)
     setReportsDialogOpen(open => !open)
   }
 
