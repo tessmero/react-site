@@ -29,7 +29,7 @@ export default function RootLayout({ children, navbar }: RootLayoutProps) {
           h-full flex flex-col 
           bg-red-50 dark:bg-neutral-800
         `}
-        style={{ minHeight: '100vh' }}
+        style={{ height: '100dvh' }}
       >
 
         {/* music-manager only used for music player easter egg */}
