@@ -46,13 +46,15 @@ function IconElem({ entry}: { entry: ChangelogEntry | GroupedChangelogEntry }) {
     else {
       // subject is demo
       return (
-        <Image
-          width="200"
-          height="200"
-          src={`/images/thumbnails/${entry.subject.id}.png`}
-          className="mt-8 h-full w-full object-cover rounded-xl"
-          alt="name"
-        />
+        <a href={`/demo_list?demoId=${entry.subject.id}`}>
+          <Image
+            width="200"
+            height="200"
+            src={`/images/thumbnails/${entry.subject.id}.png`}
+            className="mt-8 h-full w-full object-cover rounded-xl"
+            alt="name"
+          />
+        </a>
       )
     }
   }
