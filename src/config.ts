@@ -5,5 +5,5 @@ export const homePage = '/sea-block' // url of demo or any page
 
 export const headerPages = [
   // demo IDs to show in navbar
-  'grove-tender', 'avalanche', 'collide-o-scope',
+  'sketch-ball', 'orbital-launch', 'collide-o-scope',
 ]
